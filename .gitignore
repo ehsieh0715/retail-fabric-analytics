@@ -1,0 +1,11 @@
+# Raw source data is downloaded separately
+data/raw/
+
+# macOS
+.DS_Store
+
+# Notebook temporary files
+.ipynb_checkpoints/
+
+# Local environment files
+.env
