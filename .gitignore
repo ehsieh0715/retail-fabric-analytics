@@ -1,4 +1,11 @@
-# Raw source data is downloaded separately
+# Python virtual environment
+.venv/
+
+# Python cache
+__pycache__/
+*.py[cod]
+
+# Raw source data
 data/raw/
 
 # macOS
@@ -7,5 +14,5 @@ data/raw/
 # Notebook temporary files
 .ipynb_checkpoints/
 
-# Local environment files
+# Environment variables
 .env

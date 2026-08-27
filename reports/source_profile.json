@@ -1,0 +1,154 @@
+{
+  "dataset": "Maven Analytics Mexico Toy Sales",
+  "files": {
+    "sales": {
+      "row_count": 829262,
+      "columns": [
+        "Sale_ID",
+        "Date",
+        "Store_ID",
+        "Product_ID",
+        "Units"
+      ],
+      "natural_key": [
+        "Sale_ID"
+      ],
+      "blank_values": {
+        "Sale_ID": 0,
+        "Date": 0,
+        "Store_ID": 0,
+        "Product_ID": 0,
+        "Units": 0
+      },
+      "duplicate_key_rows": 0
+    },
+    "products": {
+      "row_count": 35,
+      "columns": [
+        "Product_ID",
+        "Product_Name",
+        "Product_Category",
+        "Product_Cost",
+        "Product_Price"
+      ],
+      "natural_key": [
+        "Product_ID"
+      ],
+      "blank_values": {
+        "Product_ID": 0,
+        "Product_Name": 0,
+        "Product_Category": 0,
+        "Product_Cost": 0,
+        "Product_Price": 0
+      },
+      "duplicate_key_rows": 0
+    },
+    "stores": {
+      "row_count": 50,
+      "columns": [
+        "Store_ID",
+        "Store_Name",
+        "Store_City",
+        "Store_Location",
+        "Store_Open_Date"
+      ],
+      "natural_key": [
+        "Store_ID"
+      ],
+      "blank_values": {
+        "Store_ID": 0,
+        "Store_Name": 0,
+        "Store_City": 0,
+        "Store_Location": 0,
+        "Store_Open_Date": 0
+      },
+      "duplicate_key_rows": 0
+    },
+    "inventory": {
+      "row_count": 1593,
+      "columns": [
+        "Store_ID",
+        "Product_ID",
+        "Stock_On_Hand"
+      ],
+      "natural_key": [
+        "Store_ID",
+        "Product_ID"
+      ],
+      "blank_values": {
+        "Store_ID": 0,
+        "Product_ID": 0,
+        "Stock_On_Hand": 0
+      },
+      "duplicate_key_rows": 0
+    },
+    "calendar": {
+      "row_count": 638,
+      "columns": [
+        "Date"
+      ],
+      "natural_key": [
+        "Date"
+      ],
+      "blank_values": {
+        "Date": 0
+      },
+      "duplicate_key_rows": 0
+    },
+    "data_dictionary": {
+      "row_count": 19,
+      "columns": [
+        "Table",
+        "Field",
+        "Description"
+      ],
+      "natural_key": [
+        "Table",
+        "Field"
+      ],
+      "blank_values": {
+        "Table": 0,
+        "Field": 0,
+        "Description": 0
+      },
+      "duplicate_key_rows": 0
+    }
+  },
+  "sales_checks": {
+    "date_min": "2022-01-01",
+    "date_max": "2023-09-30",
+    "distinct_dates": 638,
+    "invalid_dates": 0,
+    "dates_missing_from_calendar": 0,
+    "total_units": 1090565,
+    "units_min": 1,
+    "units_max": 30,
+    "non_positive_units": 0,
+    "orphan_product_keys": 0,
+    "orphan_store_keys": 0
+  },
+  "product_checks": {
+    "invalid_cost_values": 0,
+    "invalid_price_values": 0,
+    "cost_min": 1.99,
+    "cost_max": 34.99,
+    "price_min": 2.99,
+    "price_max": 39.99,
+    "price_below_cost_records": 0
+  },
+  "inventory_checks": {
+    "expected_store_product_combinations": 1750,
+    "available_store_product_combinations": 1593,
+    "missing_store_product_combinations": 157,
+    "explicit_zero_stock_records": 77,
+    "negative_stock_records": 0,
+    "total_stock_on_hand": 29742,
+    "orphan_product_keys": 0,
+    "orphan_store_keys": 0
+  },
+  "interpretation_notes": [
+    "The inventory source does not contain a business snapshot date.",
+    "Missing store-product combinations are not treated as zero stock.",
+    "Explicit zero-stock records are different from absent inventory combinations."
+  ]
+}
