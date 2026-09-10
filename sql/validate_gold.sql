@@ -1,3 +1,6 @@
+-- Run against the Lakehouse SQL analytics endpoint.
+-- Non-schema Lakehouse tables are exposed through the dbo SQL schema.
+
 -- 1. Gold row counts, totals, and date coverage
 SELECT
     'fact_sales rows' AS validation_check,
