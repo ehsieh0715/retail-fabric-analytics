@@ -1,411 +1,304 @@
-# Retail Sales & Inventory Analytics on Microsoft Fabric
+# Retail Sales & Inventory Analytics with Microsoft Fabric
 
-An end-to-end analytics engineering portfolio project built with Microsoft Fabric, OneLake, Data Factory pipelines, PySpark, Delta Lake, and the SQL analytics endpoint.
+![Microsoft Fabric](https://img.shields.io/badge/Microsoft%20Fabric-Data%20Engineering-5B5FC7)
+![Power BI](https://img.shields.io/badge/Power%20BI-Direct%20Lake%20%7C%20DAX-F2C811?logo=powerbi&logoColor=000000)
+![PySpark](https://img.shields.io/badge/PySpark-Medallion%20Transformations-E25A1C?logo=apachespark&logoColor=white)
+![Delta Lake](https://img.shields.io/badge/Delta%20Lake-Bronze%20%7C%20Silver%20%7C%20Gold-00ADD8)
 
-## Project status
+## Overview <!-- omit from toc -->
 
-### Completed
+This project implements an end-to-end retail analytics solution using monthly sales files and a current inventory position.
 
-- source-data profiling and reproducible monthly sales batches
-- OneLake landing-zone structure
-- parameter-driven monthly sales ingestion
-- historical and incremental Copy Activity runs
-- Bronze Delta tables for sales and reference data
-- PySpark Bronze-to-Silver transformations
-- transformation-level data-quality checks
-- Silver sales deduplication and Delta merge
-- SQL reconciliation of Bronze and Silver tables
+It combines reproducible source profiling, parameterised Microsoft Fabric ingestion, validated PySpark transformations, a two-fact Gold star schema, and a Direct Lake semantic model with reusable DAX measures.
 
-### In progress
+The four-page Power BI report helps a regional manager monitor performance, investigate weekday, product, and store drivers, and prioritise inventory or store-level follow-up.
 
-- Gold dimensional model
-- cross-layer data-quality notebook
-- pipeline orchestration and failure paths
-- Direct Lake semantic model
-- DAX measures
-- Power BI Web report
-- final architecture and evidence documentation
+![Four-page Power BI report](docs/screenshots/report/00_four_page_overview.png)
 
-Only implemented and verified functionality is described as completed.
+## Contents <!-- omit from toc -->
 
-## Business scenario
+- [Power BI Report](#power-bi-report)
+- [Architecture](#architecture)
+- [Data Foundation](#data-foundation)
+- [Data Engineering Implementation](#data-engineering-implementation)
+- [Data Quality and Validation](#data-quality-and-validation)
+- [Semantic Model and Business Logic](#semantic-model-and-business-logic)
+- [Project Structure](#project-structure)
+- [Reproduce the Solution](#reproduce-the-solution)
+- [Production Considerations](#production-considerations)
 
-A fictional multi-store toy retailer needs to integrate transaction, product, store, calendar, and current inventory data to monitor commercial performance and identify store-product combinations that may require inventory review.
+## Power BI Report
 
-The project is designed to answer:
+The four report pages turn this analytical foundation into a connected management workflow: monitor overall performance, investigate its weekday, category, and product drivers, review current inventory risks, and compare stores requiring follow-up.
 
-- How do revenue, units sold, and estimated gross profit change over time?
-- Which products, categories, and stores perform best?
-- How much inventory is currently recorded at each store?
-- Which store-product combinations have low stock relative to recent sales velocity?
-- Which products have high inventory but limited recent demand?
-- Which items should be prioritised for replenishment review?
+### 1. Regional Sales & Operations Overview
 
-## Source data
+The overview page helps regional managers monitor recent performance, place short-term movement in a longer trend, and identify stores requiring follow-up, leading products, and current replenishment risks. Sales metrics follow the selected report date and analysis period, while replenishment alerts use the latest inventory position.
+
+Key questions:
+
+- Is revenue, unit volume, margin, or gross profit deteriorating?
+- Which stores should be prioritised for follow-up?
+- Which store-product positions may require replenishment review?
+- Which products are selling most strongly?
+
+![Regional Sales and Operations Overview](docs/screenshots/report/01_executive_overview.png)
+
+### 2. Sales Performance Drivers
+
+This page explains period-over-period change by weekday, category, and product. Because retail demand varies by day of week, managers can compare like-for-like weekdays and select a day to inspect its underlying date-level trend. City, store, category, and product detail help locate where the change occurred.
+
+Key questions:
+
+- Which weekdays are performing differently from the previous period?
+- Which categories, products, or stores are driving revenue and unit changes?
+- Which products combine strong sales with weak margin?
+
+![Sales Performance Drivers with Friday selected](docs/screenshots/report/02_sales_drivers_friday_selected.png)
+
+### 3. Inventory Operations
+
+This page combines the latest inventory position with recent 30-day sales velocity to support replenishment and overstock review. Regional managers can identify immediate stock risks, locate slow-moving inventory, and see where inventory investment is concentrated across stores and product categories.
+
+Key questions:
+
+- Which store-product positions may require replenishment before stock constrains sales?
+- Which positions have no recent demand or more than sixty days of supply?
+- Where is inventory cost concentrated across stores and categories?
+
+![Inventory Operations](docs/screenshots/report/03_inventory_operations.png)
+
+### 4. Store Performance
+
+This page helps regional managers compare store growth and profitability, identify performance outliers, and prioritise follow-up. Selecting a store from the chart, matrix, or filter reveals its twelve-week revenue trend for closer investigation.
+
+Key questions:
+
+- Which stores are growing or deteriorating across revenue and margin?
+- Is a store’s recent performance part of a sustained trend or a short-term movement?
+- Which cities and stores should be prioritised for management intervention?
+
+![Store Performance with Maven Toys Campeche 2 selected](docs/screenshots/report/04_store_performance_campeche_selected.png)
+
+
+## Architecture
+
+The solution separates reproducible local preparation from the analytical pipeline implemented in Microsoft Fabric.
+
+```mermaid
+flowchart TB
+    subgraph Local["Local preparation"]
+        Source["Maven Analytics CSV files"]
+        Profile["Source profiling"]
+        Prepared["Monthly sales batches<br/>and reference extracts"]
+
+        Source --> Profile
+        Source --> Prepared
+    end
+
+    subgraph Fabric["Microsoft Fabric"]
+        Landing["OneLake landing zone"]
+        Bronze["Bronze<br/>Source-aligned Delta tables"]
+        Silver["Silver<br/>Validated and conformed tables"]
+        Gold["Gold<br/>Analytical star schema"]
+        Semantic["Direct Lake semantic model"]
+        Report["Power BI report"]
+
+        Landing --> Bronze
+        Bronze --> Silver
+        Silver --> Gold
+        Gold --> Semantic
+        Semantic --> Report
+    end
+
+    Prepared --> Landing
+```
+
+The diagram shows the primary source-to-report path. See the [technical architecture](docs/architecture.md) for the complete item-level flow, Fabric asset relationships, and architectural design choices.
+
+## Data Foundation
 
 The project uses the [Mexico Toy Sales dataset from Maven Analytics](https://mavenanalytics.io/data-playground/mexico-toy-sales), published as Public Domain.
-
-The source contains:
 
 | Source | Grain | Rows |
 |---|---|---:|
 | Sales | One transaction per `Sale_ID` | 829,262 |
 | Products | One row per `Product_ID` | 35 |
 | Stores | One row per `Store_ID` | 50 |
-| Inventory | One row per available store-product position | 1,593 |
+| Inventory | One supplied store-product position | 1,593 |
 | Calendar | One row per date | 638 |
+| Data dictionary | One table-field definition | 19 |
 
-Sales cover 1 January 2022 through 30 September 2023.
+Sales cover 1 January 2022 through 30 September 2023 and contain 1,090,565 units.
 
-Source files are excluded from Git because they can be downloaded from the original public source. The repository includes a reproducible Pandas profiling script and machine-readable profiling results.
+Two local scripts prepare a reproducible ingestion baseline:
 
-See:
-
-- `scripts/profile_source.py`
-- `scripts/create_sales_batches.py`
-- `reports/source_profile.json`
-- `data/README.md`
-
-## Architecture
-
-```text
-Maven Analytics CSV files
-          │
-          ▼
-Local source profiling and monthly batch generation
-          │
-          ▼
-OneLake landing zone
-Files/landing/maven_toys/
-          │
-          ▼
-Fabric Data Factory pipelines and Copy Activities
-          │
-          ▼
-Bronze Delta tables
-          │
-          ▼
-nb_bronze_to_silver
-PySpark cleaning, validation, deduplication, and Delta merge
-          │
-          ▼
-Silver conformed Delta tables
-          │
-          ▼
-Gold dimensional model                         [In progress]
-          │
-          ▼
-SQL analytics endpoint
-          │
-          ▼
-Direct Lake semantic model and Power BI Web    [Planned]
-```
-
-The final architecture diagram will be stored under:
-
-```text
-docs/architecture/
-```
-
-## Fabric components
-
-| Component | Name | Purpose |
+| Script | Purpose | Output |
 |---|---|---|
-| Workspace | `Retail Analytics` | Project workspace |
-| Lakehouse | `lh_retail_analytics` | OneLake files and Delta tables |
-| Sales pipeline | `pl_retail_bronze_load` | Parameter-driven monthly sales ingestion |
-| Reference pipeline | `pl_retail_reference_load` | Products, stores, inventory, and calendar ingestion |
-| Notebook | `nb_bronze_to_silver` | PySpark cleaning and conformance |
-| SQL analytics endpoint | Lakehouse endpoint | SQL validation and reconciliation |
+| `profile_source.py` | Profiles structure, keys, missing values, date coverage, and cross-file relationships | `reports/source_profile.json` |
+| `create_sales_batches.py` | Partitions the original sales file by calendar month | 21 monthly sales files |
 
-## OneLake landing design
+> [!IMPORTANT]
+> Inventory represents the latest supplied store-product position rather than a historical snapshot. The project therefore does not claim to reconstruct historical inventory levels.
 
-```text
-Files/
-└── landing/
-    └── maven_toys/
-        ├── reference/
-        │   ├── products.csv
-        │   ├── stores.csv
-        │   ├── inventory.csv
-        │   ├── calendar.csv
-        │   └── data_dictionary.csv
-        └── sales/
-            ├── sales_2022_01.csv
-            ├── ...
-            └── sales_2023_09.csv
-```
+See the [source-data documentation](data/README.md) for detailed profiling results, source constraints, and confirmed data grains.
 
-The `landing` directory represents files that have arrived in OneLake but have not yet been transformed into managed Delta tables.
+## Data Engineering Implementation
 
-![OneLake landing structure](docs/screenshots/01_lakehouse_landing_sales_files.png)
+The Fabric implementation follows a Medallion design in which each layer has a distinct responsibility:
 
-## Incremental ingestion
+- **Ingestion and Bronze:** Parameterised Data Factory pipelines append monthly sales batches and overwrite complete reference extracts. Bronze preserves source-aligned fields with ingestion timestamps and source-file metadata.
+- **Silver:** `nb_bronze_to_silver` standardises data types and names, validates keys and relationships, and applies sale-level deduplication through an idempotent Delta merge.
+- **Gold:** `nb_silver_to_gold` rebuilds a two-fact analytical model from validated Silver data and reconciles the persisted results.
+- **Orchestration:** `pl_retail_transform` runs the Silver notebook first and starts the Gold notebook only after successful completion.
 
-The original sales file is reproducibly divided into 21 monthly batches by:
+![Dynamic sales source configuration](docs/screenshots/pipelines/02_sales_dynamic_source.png)
 
-```text
-scripts/create_sales_batches.py
-```
+*The parameterised source allows the same Copy Activity to process different monthly sales files.*
 
-The sales Pipeline accepts a runtime parameter:
+![Successful transformation pipeline](docs/screenshots/pipelines/06_transformation_success.png)
 
-```text
-sales_file_pattern
-```
+*The Gold notebook runs only after the Silver notebook completes successfully.*
 
-A monthly run supplies an exact filename such as:
+### Gold Analytical Model
 
-```text
-sales_2023_02.csv
-```
+| Table | Type | Grain |
+|---|---|---|
+| `fact_sales` | Fact | One sales transaction |
+| `fact_inventory_position` | Fact | One supplied store-product position |
+| `dim_product` | Dimension | One product |
+| `dim_store` | Dimension | One store |
+| `dim_date` | Dimension | One calendar date |
 
-This allows the same Pipeline definition to process different monthly batches without editing the activity configuration.
+`dim_product` and `dim_store` are conformed dimensions shared by both fact tables. `dim_date` relates only to `fact_sales` because the inventory source does not include a snapshot date.
 
-![Sales Pipeline parameter](docs/screenshots/02_sales_pipeline_parameter.png)
+![Gold star schema](docs/screenshots/semantic-model/02_gold_star_schema.png)
 
-The Copy Activity uses the parameter as its source filename.
+*The Gold tables form a two-fact star schema for sales and current inventory analysis.*
 
-![Parameterized Copy Activity source](docs/screenshots/03_sales_copy_dynamic_source.png)
+## Data Quality and Validation
 
-The initial historical load processed the twelve monthly files from 2022.
+Validation is applied before and after transformation writes. Blocking failures prevent invalid data from reaching the next layer, while valid operational exceptions remain available for analysis.
 
-![Historical load metrics](docs/screenshots/04_sales_historical_load_metrics.png)
+| Validation area | Key checks | Outcome |
+|---|---|---|
+| Source profiling | File structure, required columns, key coverage, date ranges, and cross-file relationships | Establishes a reproducible source baseline |
+| Silver pre-write validation | Empty sources, null or duplicate keys, parsing failures, invalid quantities, and orphan references | Prevents invalid conformed tables from being written |
+| Gold post-write reconciliation | Row counts, table grain, key uniqueness, date boundaries, units, monetary totals, and foreign-key coverage | Confirms that persisted analytical tables match expected results |
+| Business-condition review | Explicit zero stock, products priced below cost, and absent inventory combinations | Retains valid operational exceptions without treating them as corrupted data |
 
-Subsequent runs processed monthly 2023 files individually, creating separate monitoring records for each execution.
+![Gold sales reconciliation](docs/screenshots/lakehouse/05_gold_sales_reconciliation.png)
 
-![Sales Pipeline run history](docs/screenshots/05_sales_pipeline_run_history.png)
+*SQL endpoint reconciliation confirms the persisted sales row count, distinct transaction count, total units, and monetary totals.*
 
-### Current limitation
+## Semantic Model and Business Logic
 
-The MVP uses explicit monthly file selection. Copy Activity appends records to Bronze and does not maintain a processed-file control table.
+### Direct Lake Model, Controls, and Measures
 
-A production implementation would add ingestion-control metadata to prevent an already processed file from being appended unintentionally.
+The Direct Lake semantic model exposes the Gold Delta tables without importing another data copy and adds reusable DAX measures, report controls, and operational indicators used across the four report pages.
 
-Silver processing is designed to be idempotent by deduplicating on `sale_id` and merging into the Delta target. Controlled replay testing remains a future enhancement.
+One-to-many, single-direction relationships allow:
 
-## Bronze layer
+- `dim_product` to filter both fact tables
+- `dim_store` to filter both fact tables
+- `dim_date` to filter `fact_sales`
 
-The Bronze layer stores source-aligned records plus technical ingestion metadata:
+The report was designed to support analysis from a selectable historical date rather than only the latest available date. Two disconnected selector tables provide this flexibility without directly filtering the underlying facts:
 
-```text
-bronze_sales
-bronze_products
-bronze_stores
-bronze_inventory
-bronze_calendar
-```
+| Selector table | Purpose |
+|---|---|
+| `Report Date` | Defines the date on which sales performance is evaluated |
+| `Analysis Period` | Controls the length and comparison basis of the current and previous periods |
 
-Technical fields include:
+DAX measures read the selected values and construct the required date windows. This prevents the report-date slicer from restricting sales to one physical date when a seven-day or thirty-day calculation is required.
 
-```text
-_ingested_at
-_source_file
-```
+![Direct Lake semantic model](docs/screenshots/semantic-model/01_direct_lake_model.png)
 
-Reference extracts use overwrite semantics, while monthly sales files use append semantics.
+*The Direct Lake model combines the Gold star schema with disconnected report controls and a dedicated measure table.*
 
-The reference-data Pipeline loads the product, store, inventory, and calendar extracts into separate Bronze Delta tables.
+Reusable calculations are organised in a dedicated `_Measures` table:
 
-![Reference Pipeline execution](docs/screenshots/06_reference_pipeline_success.png)
+| Display folder | Responsibility |
+|---|---|
+| `00 Controls` | Latest sales date, selected report date, and selected period length |
+| `01 Base` | Reusable revenue, units, gross-profit, and gross-margin aggregations |
+| `02 Period` | Current, previous, and change measures organised by Revenue, Units, Profit, and Margin |
+| `03 Inventory` | Current stock, recent demand, days of supply, and inventory status |
+| `04 Attention` | Store-attention flags, replenishment-risk counts, and exception indicators |
+| `05 Display Text` | Dynamic titles and subtitles reflecting current report selections |
 
-SQL endpoint checks confirm the expected Bronze reference-table row counts.
+![Measure display-folder organisation](docs/screenshots/semantic-model/03_measure_display_folders.png)
 
-![Bronze reference table row counts](docs/screenshots/07_bronze_reference_row_counts.png)
+*Measures are grouped by analytical responsibility rather than stored as one unstructured list.*
 
-Bronze SQL reconciliation verifies:
+### Time-Comparison Rules
 
-- persisted row count
-- sale ID uniqueness
-- sales date boundaries
-- total units
-- number of source files
-- ingestion metadata completeness
+The report uses the disconnected selectors and period measures according to the following rules:
 
-The completed Bronze dataset contains 829,262 unique sales across 21 monthly source files, covering January 2022 through September 2023.
+| Rule | Definition | Purpose |
+|---|---|---|
+| Default view | Uses the latest sales date and a 7-day analysis period | Provides a useful initial report state |
+| Daily comparison | Compares the selected date with the same weekday 7 days earlier | Avoids comparing different trading days |
+| 7-day comparison | Compares the 7 days ending on the report date with the preceding 7 days | Monitors short-term performance |
+| 30-day comparison | Compares the 30 days ending on the report date with the preceding 30 days | Provides a more stable view of recent performance |
+| 12-week trend | Shows weekly revenue through the selected report date; the latest week may be partial | Places the selected period in a longer-term context |
 
-![Bronze sales reconciliation](docs/screenshots/08_bronze_sales_reconciliation.png)
+![Historical period comparison](docs/screenshots/report/01_executive_overview_30_day.png)
 
-## Silver layer
+*The selected report date and analysis period recalculate current and previous-period performance.*
 
-The Fabric Notebook `nb_bronze_to_silver` produces:
+### Operational Indicator Definitions
 
-```text
-silver_products
-silver_stores
-silver_inventory_position
-silver_calendar
-silver_sales
-```
+Inventory indicators combine the latest supplied stock position with demand through the latest sales date. They therefore remain independent of the historical `Report Date` selector.
 
-The executable notebook is stored at:
+| Indicator | Definition | Purpose |
+|---|---|---|
+| Replenishment risk | Positive recent demand with fewer than 7 days of supply | Identifies store-product positions requiring replenishment review |
+| Potential overstock | No units sold in the last 30 days, or at least 60 days of supply | Identifies potentially slow-moving inventory |
+| Store attention | Revenue down by at least 10%, or margin down by at least 2 percentage points | Prioritises stores for management investigation |
 
-```text
-notebooks/nb_bronze_to_silver.ipynb
-```
+A missing store-product combination is not interpreted as zero stock and is excluded from inventory-risk classification.
 
-Notebook outputs are retained as evidence that the PySpark transformations were executed in Microsoft Fabric.
-
-### Product transformations
-
-Product processing:
-
-- trims descriptive attributes
-- converts currency-formatted cost and price to decimal values
-- verifies non-null and unique product keys
-- validates that parsed cost and price values are present
-- reports products priced below cost as a business warning rather than an automatic failure
-
-![Silver product quality checks](docs/screenshots/11_silver_product_quality_checks.png)
-
-### Store transformations
-
-Store processing:
-
-- standardises column names
-- parses store opening dates
-- verifies non-null and unique store keys
-- blocks blank store names and invalid dates
-
-### Inventory-position transformations
-
-Inventory processing:
-
-- maintains one row per available store-product position
-- converts stock on hand to integer
-- validates composite-key uniqueness
-- blocks null, invalid, negative, and orphan key values
-- distinguishes explicit zero stock from absent inventory combinations
-
-The source contains:
-
-```text
-77 explicit zero-stock positions
-157 absent store-product combinations
-```
-
-Absent combinations are not converted to zero because the source does not distinguish missing data from products that are not ranged at a store. The coverage check reports this source limitation rather than treating the 157 absent combinations as failed records.
-
-![Silver inventory coverage check](docs/screenshots/09_silver_inventory_coverage_check.png)
-
-### Sales transformations
-
-Sales processing:
-
-- standardises transaction fields and types
-- parses transaction dates
-- validates positive unit quantities
-- checks store and product relationships
-- deduplicates by `sale_id`
-- retains the latest ingestion record
-- merges into the Silver Delta target
-
-Transformation-level checks validate sale keys, required dates, store and product keys, and positive unit quantities.
-
-![Silver sales quality checks](docs/screenshots/12_silver_sales_quality_checks.png)
-
-Referential-integrity checks confirm that sales contain no unmatched store or product keys.
-
-![Silver sales referential integrity](docs/screenshots/10_silver_sales_referential_integrity.png)
-
-The Notebook reads the persisted `silver_sales` Delta table after the merge and confirms the saved row count, distinct sale IDs, date boundaries, and total units.
-
-![Silver sales post-write check](docs/screenshots/13_silver_sales_post_write_check.png)
-
-Final reconciliation through the SQL analytics endpoint confirms row-count uniqueness, date boundaries, total units, and zero orphan store and product keys.
-
-![Silver sales SQL reconciliation](docs/screenshots/14_silver_sales_reconciliation.png)
-
-The current Bronze source contains no duplicate sale IDs. The deduplication and merge logic has been implemented, but duplicate-input recovery has not yet been validated through a controlled batch replay.
-
-## Inventory limitation
-
-The source represents current stock on hand and does not include:
-
-- historical inventory snapshot dates
-- replenishment events
-- stock movements
-- purchase orders
-- supplier lead times
-- recorded lost sales
-
-The model therefore uses:
-
-```text
-silver_inventory_position
-```
-
-rather than claiming to contain historical inventory snapshots.
-
-An ingestion timestamp is retained for audit purposes, but it is not presented as the business date when inventory was measured.
-
-The project will not claim to calculate:
-
-- historical stockout events
-- sales lost because of stockouts
-- historical inventory movement
-- exact replenishment quantities
-- causal demand forecasts
-
-Inventory outputs will be presented as current-position indicators and replenishment-review candidates.
-
-## Planned Gold model
-
-The proposed Gold model is:
-
-```text
-fact_sales
-fact_inventory_position
-dim_product
-dim_store
-dim_date
-```
-
-This model will be confirmed during Gold implementation. A historical `fact_inventory_snapshot` will not be created because the source does not contain snapshot dates.
-
-## Data-quality strategy
-
-Blocking checks stop transformations for:
-
-- empty required sources
-- null or duplicate business keys
-- unparseable dates or numeric values
-- negative inventory quantities
-- non-positive sales quantities
-- orphan product or store references
-
-Business warnings remain queryable but do not automatically fail the pipeline. Examples include:
-
-- products priced below cost
-- explicit zero-stock positions
-- missing inventory combinations
-
-This distinction prevents valid business conditions from being misclassified as corrupted data.
-
-## Repository structure
+## Project Structure
 
 ```text
 .
 ├── README.md
 ├── data/
 │   └── README.md
-├── notebooks/
-│   └── nb_bronze_to_silver.ipynb
+├── docs/
+│   ├── architecture.md
+│   ├── deployment.md
+│   └── screenshots/
+│       ├── lakehouse/
+│       ├── notebooks/
+│       ├── pipelines/
+│       ├── report/
+│       └── semantic-model/
+├── fabric/
+│   ├── notebooks/
+│   ├── pipelines/
+│   ├── report/
+│   └── semantic-model/
 ├── reports/
 │   └── source_profile.json
 ├── scripts/
 │   ├── create_sales_batches.py
+│   ├── prepare_fabric_deployment.py
 │   └── profile_source.py
-├── docs/
-│   ├── architecture/
-│   └── screenshots/
+├── sql/
+│   └── validate_gold.sql
 ├── requirements.txt
 └── .gitignore
 ```
 
-## Reproducibility
+## Reproduce the Solution
 
-Create and activate the local Python environment:
+Rebuild the project in two stages: prepare the source files locally, then deploy the Fabric items in dependency order.
+
+### 1. Prepare the Source Files Locally
+
+Create a Python environment and install the required dependencies:
 
 ```bash
 python3 -m venv .venv
@@ -413,36 +306,37 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-Place the downloaded source files under:
+Download the six CSV files from the [Maven Analytics Mexico Toy Sales dataset](https://mavenanalytics.io/data-playground/mexico-toy-sales) and place them in:
 
 ```text
 data/raw/maven_toys/
 ```
 
-Run source profiling:
+Generate the reproducible source profile and monthly sales batches:
 
 ```bash
 python scripts/profile_source.py
-```
-
-Generate monthly sales batches:
-
-```bash
 python scripts/create_sales_batches.py
 ```
 
-Fabric Pipelines and Notebooks must be recreated or imported in a Microsoft Fabric-enabled workspace.
+After preparation, the upload inputs consist of:
 
-## Project positioning
+- 21 monthly sales files under `data/raw/maven_toys/load_batches/`
+- five unchanged reference files from the source package
 
-This is a portfolio implementation built in a Microsoft Fabric Trial environment. It demonstrates hands-on use of Fabric engineering and analytics features but is not presented as production employment experience.
+The source profile is written to `reports/source_profile.json`.
 
-Production improvements would include:
+### 2. Deploy the Fabric Solution
 
-- processed-file control metadata
-- automated artifact deployment
-- environment-specific configuration
-- secrets management
-- alerting and notification integration
-- operational service-level objectives
-- historical inventory snapshots from a suitable operational source
+Use the prepared files and exported Fabric definitions to recreate the Lakehouse, ingestion pipelines, transformation notebooks, Direct Lake semantic model, and Power BI report.
+
+Follow the [Fabric deployment guide](docs/deployment.md) for the required deployment order, target-specific binding preparation, and validation steps.
+
+## Production Considerations
+
+This portfolio project was built in a Microsoft Fabric Trial environment. A production implementation would additionally require:
+
+- a processed-file ledger or ingestion watermark to prevent unnecessary Bronze reprocessing and support controlled incremental loads
+- automated deployment and environment-specific rebinding across development, test, and production workspaces
+- pipeline monitoring, failure alerts, and retry handling
+- historical inventory snapshots and supplier lead-time data for time-aware stock analysis and replenishment planning
