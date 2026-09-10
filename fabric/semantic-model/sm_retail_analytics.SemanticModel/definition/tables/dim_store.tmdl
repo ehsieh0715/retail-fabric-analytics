@@ -1,0 +1,72 @@
+table dim_store
+	lineageTag: 9a95da50-c0f9-4229-9af6-bd9a7a4eb9d4
+	sourceLineageTag: [dbo].[dim_store]
+
+	column store_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 4e04f6be-ff0a-49ce-8e10-b9712ced1b21
+		sourceLineageTag: store_id
+		summarizeBy: none
+		sourceColumn: store_id
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column store_name
+		dataType: string
+		lineageTag: b7c910b7-2be7-4475-9bb2-cec8196c84d1
+		sourceLineageTag: store_name
+		summarizeBy: none
+		sourceColumn: store_name
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column store_city
+		dataType: string
+		lineageTag: 01c41e13-6b85-4c46-b9d8-e1c24dba038e
+		sourceLineageTag: store_city
+		summarizeBy: none
+		sourceColumn: store_city
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column store_location
+		dataType: string
+		lineageTag: ec044740-8b81-4070-bac0-edc551407057
+		sourceLineageTag: store_location
+		summarizeBy: none
+		sourceColumn: store_location
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column store_open_date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 6710a3e9-9abe-4adf-9296-b7644e3eb629
+		sourceLineageTag: store_open_date
+		summarizeBy: none
+		sourceColumn: store_open_date
+
+		changedProperty = DataType
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	partition dim_store = entity
+		mode: directLake
+		source
+			entityName: dim_store
+			schemaName: dbo
+			expressionSource: 'DirectLake - lh_retail_analytics'
+

@@ -1,0 +1,714 @@
+{
+    "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.12.0/schema.json",
+    "name": "9f8bdbe3aaef97c261a9",
+    "position": {
+        "x": 964,
+        "y": 352,
+        "z": 2000,
+        "height": 700,
+        "width": 932,
+        "tabOrder": 2000
+    },
+    "visual": {
+        "visualType": "pivotTable",
+        "query": {
+            "queryState": {
+                "Rows": {
+                    "projections": [
+                        {
+                            "field": {
+                                "Column": {
+                                    "Expression": {
+                                        "SourceRef": {
+                                            "Entity": "dim_product"
+                                        }
+                                    },
+                                    "Property": "product_category"
+                                }
+                            },
+                            "queryRef": "dim_product.product_category",
+                            "nativeQueryRef": "Category / Name",
+                            "active": true,
+                            "displayName": "Category / Name"
+                        },
+                        {
+                            "field": {
+                                "Column": {
+                                    "Expression": {
+                                        "SourceRef": {
+                                            "Entity": "dim_product"
+                                        }
+                                    },
+                                    "Property": "product_name"
+                                }
+                            },
+                            "queryRef": "dim_product.product_name",
+                            "nativeQueryRef": "product_name",
+                            "active": true
+                        }
+                    ]
+                },
+                "Values": {
+                    "projections": [
+                        {
+                            "field": {
+                                "Measure": {
+                                    "Expression": {
+                                        "SourceRef": {
+                                            "Entity": "_Measures"
+                                        }
+                                    },
+                                    "Property": "Revenue - Selected Period"
+                                }
+                            },
+                            "queryRef": "_Measures.Revenue - Selected Period",
+                            "nativeQueryRef": "Revenue",
+                            "displayName": "Revenue"
+                        },
+                        {
+                            "field": {
+                                "Measure": {
+                                    "Expression": {
+                                        "SourceRef": {
+                                            "Entity": "_Measures"
+                                        }
+                                    },
+                                    "Property": "Revenue - Previous Period"
+                                }
+                            },
+                            "queryRef": "_Measures.Revenue - Previous Period",
+                            "nativeQueryRef": "Previous",
+                            "displayName": "Previous"
+                        },
+                        {
+                            "field": {
+                                "Measure": {
+                                    "Expression": {
+                                        "SourceRef": {
+                                            "Entity": "_Measures"
+                                        }
+                                    },
+                                    "Property": "Revenue Period Change Amount"
+                                }
+                            },
+                            "queryRef": "_Measures.Revenue Period Change Amount",
+                            "nativeQueryRef": "Revenue Δ",
+                            "displayName": "Revenue Δ",
+                            "format": "\\$#,0.0;(\\$#,0.0);\\$#,0.0"
+                        },
+                        {
+                            "field": {
+                                "Measure": {
+                                    "Expression": {
+                                        "SourceRef": {
+                                            "Entity": "_Measures"
+                                        }
+                                    },
+                                    "Property": "Units - Selected Period"
+                                }
+                            },
+                            "queryRef": "_Measures.Units - Selected Period",
+                            "nativeQueryRef": "Units",
+                            "displayName": "Units"
+                        },
+                        {
+                            "field": {
+                                "Measure": {
+                                    "Expression": {
+                                        "SourceRef": {
+                                            "Entity": "_Measures"
+                                        }
+                                    },
+                                    "Property": "Units - Previous Period"
+                                }
+                            },
+                            "queryRef": "_Measures.Units - Previous Period",
+                            "nativeQueryRef": "Previous1",
+                            "displayName": "Previous"
+                        },
+                        {
+                            "field": {
+                                "Measure": {
+                                    "Expression": {
+                                        "SourceRef": {
+                                            "Entity": "_Measures"
+                                        }
+                                    },
+                                    "Property": "Units Change %"
+                                }
+                            },
+                            "queryRef": "_Measures.Units Change %",
+                            "nativeQueryRef": "Units Δ %",
+                            "displayName": "Units Δ %"
+                        },
+                        {
+                            "field": {
+                                "Measure": {
+                                    "Expression": {
+                                        "SourceRef": {
+                                            "Entity": "_Measures"
+                                        }
+                                    },
+                                    "Property": "Gross Margin % - Selected Period"
+                                }
+                            },
+                            "queryRef": "_Measures.Gross Margin % - Selected Period",
+                            "nativeQueryRef": "Margin",
+                            "displayName": "Margin"
+                        }
+                    ]
+                }
+            },
+            "sortDefinition": {
+                "sort": [
+                    {
+                        "field": {
+                            "Column": {
+                                "Expression": {
+                                    "SourceRef": {
+                                        "Entity": "dim_product"
+                                    }
+                                },
+                                "Property": "product_category"
+                            }
+                        },
+                        "direction": "Descending"
+                    }
+                ]
+            }
+        },
+        "expansionStates": [
+            {
+                "roles": [
+                    "Rows"
+                ],
+                "levels": [
+                    {
+                        "queryRefs": [
+                            "dim_product.product_category"
+                        ],
+                        "isCollapsed": true,
+                        "identityKeys": [
+                            {
+                                "Column": {
+                                    "Expression": {
+                                        "SourceRef": {
+                                            "Entity": "dim_product"
+                                        }
+                                    },
+                                    "Property": "product_category"
+                                }
+                            }
+                        ],
+                        "isPinned": true
+                    },
+                    {
+                        "queryRefs": [
+                            "dim_product.product_name"
+                        ],
+                        "isCollapsed": true,
+                        "isPinned": true
+                    }
+                ],
+                "root": {
+                    "children": [
+                        {
+                            "identityValues": [
+                                {
+                                    "Literal": {
+                                        "Value": "'Electronics'"
+                                    }
+                                }
+                            ],
+                            "isToggled": true
+                        },
+                        {
+                            "identityValues": [
+                                {
+                                    "Literal": {
+                                        "Value": "'Art & Crafts'"
+                                    }
+                                }
+                            ],
+                            "isToggled": true
+                        }
+                    ]
+                }
+            }
+        ],
+        "objects": {
+            "values": [
+                {
+                    "properties": {
+                        "fontSize": {
+                            "expr": {
+                                "Literal": {
+                                    "Value": "13D"
+                                }
+                            }
+                        }
+                    }
+                },
+                {
+                    "properties": {
+                        "backColor": {
+                            "solid": {
+                                "color": {
+                                    "expr": {
+                                        "Conditional": {
+                                            "Cases": [
+                                                {
+                                                    "Condition": {
+                                                        "Comparison": {
+                                                            "ComparisonKind": 0,
+                                                            "Left": {
+                                                                "Measure": {
+                                                                    "Expression": {
+                                                                        "SourceRef": {
+                                                                            "Entity": "_Measures"
+                                                                        }
+                                                                    },
+                                                                    "Property": "Revenue Period Change Amount"
+                                                                }
+                                                            },
+                                                            "Right": {
+                                                                "RangePercent": {
+                                                                    "Min": {
+                                                                        "ScopedEval": {
+                                                                            "Expression": {
+                                                                                "Aggregation": {
+                                                                                    "Expression": {
+                                                                                        "ScopedEval": {
+                                                                                            "Expression": {
+                                                                                                "Measure": {
+                                                                                                    "Expression": {
+                                                                                                        "SourceRef": {
+                                                                                                            "Entity": "_Measures"
+                                                                                                        }
+                                                                                                    },
+                                                                                                    "Property": "Revenue Period Change Amount"
+                                                                                                }
+                                                                                            },
+                                                                                            "Scope": [
+                                                                                                {
+                                                                                                    "AllRolesRef": {}
+                                                                                                }
+                                                                                            ]
+                                                                                        }
+                                                                                    },
+                                                                                    "Function": 3
+                                                                                }
+                                                                            },
+                                                                            "Scope": []
+                                                                        }
+                                                                    },
+                                                                    "Max": {
+                                                                        "ScopedEval": {
+                                                                            "Expression": {
+                                                                                "Aggregation": {
+                                                                                    "Expression": {
+                                                                                        "ScopedEval": {
+                                                                                            "Expression": {
+                                                                                                "Measure": {
+                                                                                                    "Expression": {
+                                                                                                        "SourceRef": {
+                                                                                                            "Entity": "_Measures"
+                                                                                                        }
+                                                                                                    },
+                                                                                                    "Property": "Revenue Period Change Amount"
+                                                                                                }
+                                                                                            },
+                                                                                            "Scope": [
+                                                                                                {
+                                                                                                    "AllRolesRef": {}
+                                                                                                }
+                                                                                            ]
+                                                                                        }
+                                                                                    },
+                                                                                    "Function": 4
+                                                                                }
+                                                                            },
+                                                                            "Scope": []
+                                                                        }
+                                                                    },
+                                                                    "Percent": 0
+                                                                }
+                                                            }
+                                                        }
+                                                    },
+                                                    "Value": {
+                                                        "Literal": {
+                                                            "Value": "'#fff'"
+                                                        }
+                                                    }
+                                                },
+                                                {
+                                                    "Condition": {
+                                                        "Comparison": {
+                                                            "ComparisonKind": 1,
+                                                            "Left": {
+                                                                "Measure": {
+                                                                    "Expression": {
+                                                                        "SourceRef": {
+                                                                            "Entity": "_Measures"
+                                                                        }
+                                                                    },
+                                                                    "Property": "Revenue Period Change Amount"
+                                                                }
+                                                            },
+                                                            "Right": {
+                                                                "Literal": {
+                                                                    "Value": "0D"
+                                                                }
+                                                            }
+                                                        }
+                                                    },
+                                                    "Value": {
+                                                        "Literal": {
+                                                            "Value": "'#b3fce6'"
+                                                        }
+                                                    }
+                                                },
+                                                {
+                                                    "Condition": {
+                                                        "Comparison": {
+                                                            "ComparisonKind": 3,
+                                                            "Left": {
+                                                                "Measure": {
+                                                                    "Expression": {
+                                                                        "SourceRef": {
+                                                                            "Entity": "_Measures"
+                                                                        }
+                                                                    },
+                                                                    "Property": "Revenue Period Change Amount"
+                                                                }
+                                                            },
+                                                            "Right": {
+                                                                "Literal": {
+                                                                    "Value": "0D"
+                                                                }
+                                                            }
+                                                        }
+                                                    },
+                                                    "Value": {
+                                                        "Literal": {
+                                                            "Value": "'#fbb9be'"
+                                                        }
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "selector": {
+                        "data": [
+                            {
+                                "dataViewWildcard": {
+                                    "matchingOption": 1
+                                }
+                            }
+                        ],
+                        "metadata": "_Measures.Revenue Period Change Amount"
+                    }
+                },
+                {
+                    "properties": {
+                        "backColor": {
+                            "solid": {
+                                "color": {
+                                    "expr": {
+                                        "Conditional": {
+                                            "Cases": [
+                                                {
+                                                    "Condition": {
+                                                        "Comparison": {
+                                                            "ComparisonKind": 1,
+                                                            "Left": {
+                                                                "Measure": {
+                                                                    "Expression": {
+                                                                        "SourceRef": {
+                                                                            "Entity": "_Measures"
+                                                                        }
+                                                                    },
+                                                                    "Property": "Units Change %"
+                                                                }
+                                                            },
+                                                            "Right": {
+                                                                "Literal": {
+                                                                    "Value": "0D"
+                                                                }
+                                                            }
+                                                        }
+                                                    },
+                                                    "Value": {
+                                                        "Literal": {
+                                                            "Value": "'#b3fce6'"
+                                                        }
+                                                    }
+                                                },
+                                                {
+                                                    "Condition": {
+                                                        "Comparison": {
+                                                            "ComparisonKind": 0,
+                                                            "Left": {
+                                                                "Measure": {
+                                                                    "Expression": {
+                                                                        "SourceRef": {
+                                                                            "Entity": "_Measures"
+                                                                        }
+                                                                    },
+                                                                    "Property": "Units Change %"
+                                                                }
+                                                            },
+                                                            "Right": {
+                                                                "Literal": {
+                                                                    "Value": "0D"
+                                                                }
+                                                            }
+                                                        }
+                                                    },
+                                                    "Value": {
+                                                        "Literal": {
+                                                            "Value": "'#fff'"
+                                                        }
+                                                    }
+                                                },
+                                                {
+                                                    "Condition": {
+                                                        "Comparison": {
+                                                            "ComparisonKind": 3,
+                                                            "Left": {
+                                                                "Measure": {
+                                                                    "Expression": {
+                                                                        "SourceRef": {
+                                                                            "Entity": "_Measures"
+                                                                        }
+                                                                    },
+                                                                    "Property": "Units Change %"
+                                                                }
+                                                            },
+                                                            "Right": {
+                                                                "Literal": {
+                                                                    "Value": "0D"
+                                                                }
+                                                            }
+                                                        }
+                                                    },
+                                                    "Value": {
+                                                        "Literal": {
+                                                            "Value": "'#fbb9be'"
+                                                        }
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "selector": {
+                        "data": [
+                            {
+                                "dataViewWildcard": {
+                                    "matchingOption": 1
+                                }
+                            }
+                        ],
+                        "metadata": "_Measures.Units Change %"
+                    }
+                }
+            ],
+            "columnHeaders": [
+                {
+                    "properties": {
+                        "fontSize": {
+                            "expr": {
+                                "Literal": {
+                                    "Value": "13D"
+                                }
+                            }
+                        },
+                        "columnAdjustment": {
+                            "expr": {
+                                "Literal": {
+                                    "Value": "'growToFit'"
+                                }
+                            }
+                        }
+                    }
+                }
+            ],
+            "total": [
+                {
+                    "properties": {}
+                }
+            ],
+            "subTotals": [
+                {
+                    "properties": {
+                        "rowSubtotals": {
+                            "expr": {
+                                "Literal": {
+                                    "Value": "false"
+                                }
+                            }
+                        }
+                    }
+                }
+            ],
+            "rowHeaders": [
+                {
+                    "properties": {
+                        "fontSize": {
+                            "expr": {
+                                "Literal": {
+                                    "Value": "13D"
+                                }
+                            }
+                        }
+                    }
+                }
+            ],
+            "columnWidth": [
+                {
+                    "properties": {
+                        "value": {
+                            "expr": {
+                                "Literal": {
+                                    "Value": "208.37014262656297D"
+                                }
+                            }
+                        }
+                    },
+                    "selector": {
+                        "metadata": "dim_product.product_category"
+                    }
+                }
+            ]
+        },
+        "visualContainerObjects": {
+            "title": [
+                {
+                    "properties": {
+                        "text": {
+                            "expr": {
+                                "Literal": {
+                                    "Value": "'Product Performance'"
+                                }
+                            }
+                        },
+                        "fontSize": {
+                            "expr": {
+                                "Literal": {
+                                    "Value": "18D"
+                                }
+                            }
+                        }
+                    }
+                }
+            ],
+            "subTitle": [
+                {
+                    "properties": {
+                        "show": {
+                            "expr": {
+                                "Literal": {
+                                    "Value": "true"
+                                }
+                            }
+                        },
+                        "text": {
+                            "expr": {
+                                "Literal": {
+                                    "Value": "'Current versus previous period by category and product'"
+                                }
+                            }
+                        }
+                    }
+                }
+            ]
+        },
+        "drillFilterOtherVisuals": true
+    },
+    "filterConfig": {
+        "filters": [
+            {
+                "name": "05eab60895f7dc3c91ca",
+                "field": {
+                    "Column": {
+                        "Expression": {
+                            "SourceRef": {
+                                "Entity": "dim_product"
+                            }
+                        },
+                        "Property": "product_category"
+                    }
+                },
+                "type": "Categorical",
+                "filter": {
+                    "Version": 2,
+                    "From": [
+                        {
+                            "Name": "d",
+                            "Entity": "dim_product",
+                            "Type": 0
+                        }
+                    ],
+                    "Where": [
+                        {
+                            "Condition": {
+                                "Not": {
+                                    "Expression": {
+                                        "In": {
+                                            "Expressions": [
+                                                {
+                                                    "Column": {
+                                                        "Expression": {
+                                                            "SourceRef": {
+                                                                "Source": "d"
+                                                            }
+                                                        },
+                                                        "Property": "product_category"
+                                                    }
+                                                }
+                                            ],
+                                            "Values": [
+                                                [
+                                                    {
+                                                        "Literal": {
+                                                            "Value": "null"
+                                                        }
+                                                    }
+                                                ]
+                                            ]
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    ]
+                },
+                "objects": {
+                    "general": [
+                        {
+                            "properties": {
+                                "isInvertedSelectionMode": {
+                                    "expr": {
+                                        "Literal": {
+                                            "Value": "true"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    ]
+                }
+            }
+        ],
+        "filterSortOrder": "Custom"
+    }
+}

@@ -1,0 +1,107 @@
+table dim_product
+	lineageTag: a423f138-e5f7-4b77-a3cf-75f2537c7fe0
+	sourceLineageTag: [dbo].[dim_product]
+
+	column product_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 3ae5ebed-ae50-4f7c-aa82-451118a9039a
+		sourceLineageTag: product_id
+		summarizeBy: none
+		sourceColumn: product_id
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column product_name
+		dataType: string
+		lineageTag: f5e11f7d-ece7-4a77-a592-253d6826ef75
+		sourceLineageTag: product_name
+		summarizeBy: none
+		sourceColumn: product_name
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column product_category
+		dataType: string
+		lineageTag: 45d20ad9-cfb6-4b78-8a0a-5a3ad5227bec
+		sourceLineageTag: product_category
+		summarizeBy: none
+		sourceColumn: product_category
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column product_cost
+		dataType: double
+		formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
+		lineageTag: ad7c0129-6156-4be7-a1c8-f085ca76e3c0
+		sourceLineageTag: product_cost
+		summarizeBy: sum
+		sourceColumn: product_cost
+
+		changedProperty = FormatString
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	column product_price
+		dataType: double
+		formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
+		lineageTag: ca11fa8a-f43e-4889-81d5-4bed6b12fcd1
+		sourceLineageTag: product_price
+		summarizeBy: sum
+		sourceColumn: product_price
+
+		changedProperty = FormatString
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	column unit_margin
+		dataType: double
+		formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
+		lineageTag: cc87ebd0-0157-41ec-a87d-7fc7b81ffbc5
+		sourceLineageTag: unit_margin
+		summarizeBy: sum
+		sourceColumn: unit_margin
+
+		changedProperty = FormatString
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	column unit_margin_pct
+		dataType: decimal
+		formatString: #,0.00%;-#,0.00%;#,0.00%
+		lineageTag: 39e99ae1-b3d5-40d6-a336-168ce6702cea
+		sourceLineageTag: unit_margin_pct
+		summarizeBy: sum
+		sourceColumn: unit_margin_pct
+
+		changedProperty = FormatString
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_product = entity
+		mode: directLake
+		source
+			entityName: dim_product
+			schemaName: dbo
+			expressionSource: 'DirectLake - lh_retail_analytics'
+

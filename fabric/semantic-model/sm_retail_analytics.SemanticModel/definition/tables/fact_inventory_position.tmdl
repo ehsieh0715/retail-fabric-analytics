@@ -1,0 +1,93 @@
+table fact_inventory_position
+	lineageTag: f2f328c9-dcd2-4075-9426-f77a8c7c2334
+	sourceLineageTag: [dbo].[fact_inventory_position]
+
+	column store_id
+		dataType: int64
+		formatString: 0
+		lineageTag: d178b3d0-24ca-4684-9872-ed06d9874fb9
+		sourceLineageTag: store_id
+		summarizeBy: none
+		sourceColumn: store_id
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column product_id
+		dataType: int64
+		formatString: 0
+		lineageTag: f1ff89fd-bd2c-4c2b-9dba-3569eaddf6cc
+		sourceLineageTag: product_id
+		summarizeBy: none
+		sourceColumn: product_id
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column stock_on_hand
+		dataType: int64
+		formatString: 0
+		lineageTag: 25041a90-7bf1-468c-b75e-3dee92e30a26
+		sourceLineageTag: stock_on_hand
+		summarizeBy: sum
+		sourceColumn: stock_on_hand
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column inventory_cost_value
+		dataType: double
+		formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
+		lineageTag: 5475e373-b4ed-4236-8420-4aecdf580872
+		sourceLineageTag: inventory_cost_value
+		summarizeBy: sum
+		sourceColumn: inventory_cost_value
+
+		changedProperty = FormatString
+
+		changedProperty = DisplayFolder
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	column inventory_retail_value
+		dataType: double
+		formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
+		lineageTag: 1a1f836a-cf2b-44bc-b53c-5903d04a7b8a
+		sourceLineageTag: inventory_retail_value
+		summarizeBy: sum
+		sourceColumn: inventory_retail_value
+
+		changedProperty = FormatString
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	column source_ingested_at
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 23b4fac8-7091-4106-a397-8864de201a7f
+		sourceLineageTag: source_ingested_at
+		summarizeBy: none
+		sourceColumn: source_ingested_at
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	partition fact_inventory_position = entity
+		mode: directLake
+		source
+			entityName: fact_inventory_position
+			schemaName: dbo
+			expressionSource: 'DirectLake - lh_retail_analytics'
+

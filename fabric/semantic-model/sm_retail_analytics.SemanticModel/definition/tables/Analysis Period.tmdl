@@ -1,0 +1,47 @@
+table 'Analysis Period'
+	lineageTag: 40053f45-afbc-4bf5-9fea-bae3b36fe28d
+
+	column Period
+		lineageTag: 8013cfd5-ce24-4259-a705-75b9ac6c0282
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Period]
+		sortByColumn: 'Sort Order'
+
+		annotation SummarizationSetBy = Automatic
+
+	column Days
+		formatString: 0
+		lineageTag: 408fbbb1-d415-4452-883e-7529b51b76c7
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Days]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Sort Order'
+		formatString: 0
+		lineageTag: ff3d559a-bc77-42fd-a5f3-200c63831b5e
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Sort Order]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Analysis Period' = calculated
+		mode: import
+		source =
+				
+				DATATABLE (
+				    "Period", STRING,
+				    "Days", INTEGER,
+				    "Sort Order", INTEGER,
+				    {
+				        { "Day", 1, 1 },
+				        { "7 Days", 7, 2 },
+				        { "30 Days", 30, 3 }
+				    }
+				)
+
+	annotation PBI_Id = 531706dc0297422bbc924ef7f61c09aa
+

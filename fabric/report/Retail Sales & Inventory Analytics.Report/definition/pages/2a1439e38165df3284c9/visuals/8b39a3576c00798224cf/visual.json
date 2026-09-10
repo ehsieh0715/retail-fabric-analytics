@@ -1,0 +1,190 @@
+{
+    "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.12.0/schema.json",
+    "name": "8b39a3576c00798224cf",
+    "position": {
+        "x": 29.333333333333332,
+        "y": 352,
+        "z": 2000,
+        "height": 338.6666666666667,
+        "width": 693.3333333333334,
+        "tabOrder": 2000
+    },
+    "visual": {
+        "visualType": "lineChart",
+        "query": {
+            "queryState": {
+                "Category": {
+                    "projections": [
+                        {
+                            "field": {
+                                "Column": {
+                                    "Expression": {
+                                        "SourceRef": {
+                                            "Entity": "dim_date"
+                                        }
+                                    },
+                                    "Property": "year_week"
+                                }
+                            },
+                            "queryRef": "dim_date.year_week",
+                            "nativeQueryRef": "year_week",
+                            "active": true
+                        }
+                    ]
+                },
+                "Tooltips": {
+                    "projections": [
+                        {
+                            "field": {
+                                "Measure": {
+                                    "Expression": {
+                                        "SourceRef": {
+                                            "Entity": "_Measures"
+                                        }
+                                    },
+                                    "Property": "Total Units"
+                                }
+                            },
+                            "queryRef": "_Measures.Total Units",
+                            "nativeQueryRef": "Total Units"
+                        },
+                        {
+                            "field": {
+                                "Measure": {
+                                    "Expression": {
+                                        "SourceRef": {
+                                            "Entity": "_Measures"
+                                        }
+                                    },
+                                    "Property": "Gross Margin %"
+                                }
+                            },
+                            "queryRef": "_Measures.Gross Margin %",
+                            "nativeQueryRef": "Gross Margin %"
+                        }
+                    ]
+                },
+                "Y": {
+                    "projections": [
+                        {
+                            "field": {
+                                "Measure": {
+                                    "Expression": {
+                                        "SourceRef": {
+                                            "Entity": "_Measures"
+                                        }
+                                    },
+                                    "Property": "Revenue - 12 Week Trend"
+                                }
+                            },
+                            "queryRef": "_Measures.Revenue - 12 Week Trend",
+                            "nativeQueryRef": "Weekly Revenue",
+                            "displayName": "Weekly Revenue"
+                        }
+                    ]
+                }
+            },
+            "sortDefinition": {
+                "sort": [
+                    {
+                        "field": {
+                            "Column": {
+                                "Expression": {
+                                    "SourceRef": {
+                                        "Entity": "dim_date"
+                                    }
+                                },
+                                "Property": "year_week"
+                            }
+                        },
+                        "direction": "Ascending"
+                    }
+                ]
+            }
+        },
+        "objects": {
+            "categoryAxis": [
+                {
+                    "properties": {
+                        "fontSize": {
+                            "expr": {
+                                "Literal": {
+                                    "Value": "12D"
+                                }
+                            }
+                        }
+                    }
+                }
+            ],
+            "valueAxis": [
+                {
+                    "properties": {
+                        "fontSize": {
+                            "expr": {
+                                "Literal": {
+                                    "Value": "12D"
+                                }
+                            }
+                        }
+                    }
+                }
+            ],
+            "lineStyles": [
+                {
+                    "properties": {
+                        "lineChartType": {
+                            "expr": {
+                                "Literal": {
+                                    "Value": "'linear'"
+                                }
+                            }
+                        }
+                    }
+                }
+            ]
+        },
+        "visualContainerObjects": {
+            "title": [
+                {
+                    "properties": {
+                        "text": {
+                            "expr": {
+                                "Literal": {
+                                    "Value": "'Revenue Trend — Last 12 Weeks'"
+                                }
+                            }
+                        },
+                        "fontSize": {
+                            "expr": {
+                                "Literal": {
+                                    "Value": "18D"
+                                }
+                            }
+                        }
+                    }
+                }
+            ],
+            "subTitle": [
+                {
+                    "properties": {
+                        "show": {
+                            "expr": {
+                                "Literal": {
+                                    "Value": "true"
+                                }
+                            }
+                        },
+                        "text": {
+                            "expr": {
+                                "Literal": {
+                                    "Value": "'Weekly revenue through the selected Report Date; latest week may be partial'"
+                                }
+                            }
+                        }
+                    }
+                }
+            ]
+        },
+        "drillFilterOtherVisuals": true
+    }
+}

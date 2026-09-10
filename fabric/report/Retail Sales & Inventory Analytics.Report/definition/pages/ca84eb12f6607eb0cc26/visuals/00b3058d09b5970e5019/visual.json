@@ -1,0 +1,921 @@
+{
+    "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.12.0/schema.json",
+    "name": "00b3058d09b5970e5019",
+    "position": {
+        "x": 31.532846715328468,
+        "y": 189.19708029197082,
+        "z": 9000,
+        "height": 147.15328467153284,
+        "width": 1856.934306569343,
+        "tabOrder": 9000
+    },
+    "visual": {
+        "visualType": "cardVisual",
+        "query": {
+            "queryState": {
+                "Data": {
+                    "projections": [
+                        {
+                            "field": {
+                                "Measure": {
+                                    "Expression": {
+                                        "SourceRef": {
+                                            "Entity": "_Measures"
+                                        }
+                                    },
+                                    "Property": "Revenue - Selected Period"
+                                }
+                            },
+                            "queryRef": "_Measures.Revenue - Selected Period",
+                            "nativeQueryRef": "Revenue",
+                            "displayName": "Revenue"
+                        },
+                        {
+                            "field": {
+                                "Measure": {
+                                    "Expression": {
+                                        "SourceRef": {
+                                            "Entity": "_Measures"
+                                        }
+                                    },
+                                    "Property": "Units - Selected Period"
+                                }
+                            },
+                            "queryRef": "_Measures.Units - Selected Period",
+                            "nativeQueryRef": "Units Sold",
+                            "displayName": "Units Sold"
+                        },
+                        {
+                            "field": {
+                                "Measure": {
+                                    "Expression": {
+                                        "SourceRef": {
+                                            "Entity": "_Measures"
+                                        }
+                                    },
+                                    "Property": "Gross Margin % - Selected Period"
+                                }
+                            },
+                            "queryRef": "_Measures.Gross Margin % - Selected Period",
+                            "nativeQueryRef": "Gross Margin",
+                            "displayName": "Gross Margin"
+                        },
+                        {
+                            "field": {
+                                "Measure": {
+                                    "Expression": {
+                                        "SourceRef": {
+                                            "Entity": "_Measures"
+                                        }
+                                    },
+                                    "Property": "Stores Requiring Attention Count"
+                                }
+                            },
+                            "queryRef": "_Measures.Stores Requiring Attention Count",
+                            "nativeQueryRef": "Stores Requiring Attention",
+                            "displayName": "Stores Requiring Attention"
+                        }
+                    ]
+                }
+            },
+            "sortDefinition": {
+                "sort": [
+                    {
+                        "field": {
+                            "Measure": {
+                                "Expression": {
+                                    "SourceRef": {
+                                        "Entity": "_Measures"
+                                    }
+                                },
+                                "Property": "Revenue - Selected Period"
+                            }
+                        },
+                        "direction": "Descending"
+                    }
+                ],
+                "isDefaultSort": true
+            }
+        },
+        "objects": {
+            "overFlow": [
+                {
+                    "properties": {
+                        "overFlowDirection": {
+                            "expr": {
+                                "Literal": {
+                                    "Value": "1D"
+                                }
+                            }
+                        }
+                    }
+                }
+            ],
+            "label": [
+                {
+                    "properties": {
+                        "show": {
+                            "expr": {
+                                "Literal": {
+                                    "Value": "true"
+                                }
+                            }
+                        },
+                        "heading": {
+                            "expr": {
+                                "Literal": {
+                                    "Value": "'Heading3'"
+                                }
+                            }
+                        },
+                        "fontSize": {
+                            "expr": {
+                                "Literal": {
+                                    "Value": "15D"
+                                }
+                            }
+                        }
+                    },
+                    "selector": {
+                        "id": "default"
+                    }
+                },
+                {
+                    "properties": {
+                        "textWrap": {
+                            "expr": {
+                                "Literal": {
+                                    "Value": "true"
+                                }
+                            }
+                        },
+                        "text": {
+                            "expr": {
+                                "Literal": {
+                                    "Value": "''"
+                                }
+                            }
+                        }
+                    },
+                    "selector": {
+                        "metadata": "_Measures.Stores Requiring Attention Count"
+                    }
+                }
+            ],
+            "divider": [
+                {
+                    "properties": {
+                        "show": {
+                            "expr": {
+                                "Literal": {
+                                    "Value": "false"
+                                }
+                            }
+                        }
+                    },
+                    "selector": {
+                        "id": "default"
+                    }
+                }
+            ],
+            "referenceLabel": [
+                {
+                    "properties": {
+                        "value": {
+                            "expr": {
+                                "Measure": {
+                                    "Expression": {
+                                        "SourceRef": {
+                                            "Entity": "_Measures"
+                                        }
+                                    },
+                                    "Property": "Revenue Change %"
+                                }
+                            }
+                        }
+                    },
+                    "selector": {
+                        "data": [
+                            {
+                                "dataViewWildcard": {
+                                    "matchingOption": 0
+                                }
+                            }
+                        ],
+                        "metadata": "_Measures.Revenue - Selected Period",
+                        "id": "field-ebafed9c-d365-7657-af6a-64209b84b513",
+                        "order": 0
+                    }
+                },
+                {
+                    "properties": {
+                        "backgroundShow": {
+                            "expr": {
+                                "Literal": {
+                                    "Value": "false"
+                                }
+                            }
+                        }
+                    },
+                    "selector": {
+                        "id": "default"
+                    }
+                },
+                {
+                    "properties": {
+                        "value": {
+                            "expr": {
+                                "Measure": {
+                                    "Expression": {
+                                        "SourceRef": {
+                                            "Entity": "_Measures"
+                                        }
+                                    },
+                                    "Property": "Units Change %"
+                                }
+                            }
+                        }
+                    },
+                    "selector": {
+                        "data": [
+                            {
+                                "dataViewWildcard": {
+                                    "matchingOption": 0
+                                }
+                            }
+                        ],
+                        "metadata": "_Measures.Units - Selected Period",
+                        "id": "field-d59c191f-2ca9-6ef0-7780-9a724d2a0278",
+                        "order": 0
+                    }
+                },
+                {
+                    "properties": {
+                        "value": {
+                            "expr": {
+                                "Measure": {
+                                    "Expression": {
+                                        "SourceRef": {
+                                            "Entity": "_Measures"
+                                        }
+                                    },
+                                    "Property": "Gross Margin Period Change pp"
+                                }
+                            }
+                        }
+                    },
+                    "selector": {
+                        "data": [
+                            {
+                                "dataViewWildcard": {
+                                    "matchingOption": 0
+                                }
+                            }
+                        ],
+                        "metadata": "_Measures.Gross Margin % - Selected Period",
+                        "id": "field-1af39698-9473-9cb6-3728-f10ade3e3938",
+                        "order": 0
+                    }
+                }
+            ],
+            "referenceLabelTitle": [
+                {
+                    "properties": {
+                        "titleContentType": {
+                            "expr": {
+                                "Literal": {
+                                    "Value": "'custom'"
+                                }
+                            }
+                        },
+                        "titleText": {
+                            "expr": {
+                                "Literal": {
+                                    "Value": "'Change'"
+                                }
+                            }
+                        }
+                    },
+                    "selector": {
+                        "metadata": "_Measures.Revenue - Selected Period",
+                        "id": "field-ebafed9c-d365-7657-af6a-64209b84b513"
+                    }
+                },
+                {
+                    "properties": {
+                        "titleFontSize": {
+                            "expr": {
+                                "Literal": {
+                                    "Value": "14D"
+                                }
+                            }
+                        }
+                    },
+                    "selector": {
+                        "id": "default"
+                    }
+                },
+                {
+                    "properties": {
+                        "titleContentType": {
+                            "expr": {
+                                "Literal": {
+                                    "Value": "'custom'"
+                                }
+                            }
+                        },
+                        "titleText": {
+                            "expr": {
+                                "Literal": {
+                                    "Value": "'Change'"
+                                }
+                            }
+                        }
+                    },
+                    "selector": {
+                        "metadata": "_Measures.Units - Selected Period",
+                        "id": "field-d59c191f-2ca9-6ef0-7780-9a724d2a0278"
+                    }
+                },
+                {
+                    "properties": {
+                        "titleContentType": {
+                            "expr": {
+                                "Literal": {
+                                    "Value": "'custom'"
+                                }
+                            }
+                        },
+                        "titleText": {
+                            "expr": {
+                                "Literal": {
+                                    "Value": "'Margin change'"
+                                }
+                            }
+                        }
+                    },
+                    "selector": {
+                        "metadata": "_Measures.Gross Margin % - Selected Period",
+                        "id": "field-1af39698-9473-9cb6-3728-f10ade3e3938"
+                    }
+                }
+            ],
+            "referenceLabelValue": [
+                {
+                    "properties": {
+                        "valueFontColor": {
+                            "solid": {
+                                "color": {
+                                    "expr": {
+                                        "Conditional": {
+                                            "Cases": [
+                                                {
+                                                    "Condition": {
+                                                        "Comparison": {
+                                                            "ComparisonKind": 2,
+                                                            "Left": {
+                                                                "Measure": {
+                                                                    "Expression": {
+                                                                        "SourceRef": {
+                                                                            "Entity": "_Measures"
+                                                                        }
+                                                                    },
+                                                                    "Property": "Revenue - Selected Period"
+                                                                }
+                                                            },
+                                                            "Right": {
+                                                                "Literal": {
+                                                                    "Value": "0D"
+                                                                }
+                                                            }
+                                                        }
+                                                    },
+                                                    "Value": {
+                                                        "Literal": {
+                                                            "Value": "'#217c60'"
+                                                        }
+                                                    }
+                                                },
+                                                {
+                                                    "Condition": {
+                                                        "Comparison": {
+                                                            "ComparisonKind": 0,
+                                                            "Left": {
+                                                                "Measure": {
+                                                                    "Expression": {
+                                                                        "SourceRef": {
+                                                                            "Entity": "_Measures"
+                                                                        }
+                                                                    },
+                                                                    "Property": "Revenue - Selected Period"
+                                                                }
+                                                            },
+                                                            "Right": {
+                                                                "Literal": {
+                                                                    "Value": "0D"
+                                                                }
+                                                            }
+                                                        }
+                                                    },
+                                                    "Value": {
+                                                        "Literal": {
+                                                            "Value": "'#666666'"
+                                                        }
+                                                    }
+                                                },
+                                                {
+                                                    "Condition": {
+                                                        "Comparison": {
+                                                            "ComparisonKind": 3,
+                                                            "Left": {
+                                                                "Measure": {
+                                                                    "Expression": {
+                                                                        "SourceRef": {
+                                                                            "Entity": "_Measures"
+                                                                        }
+                                                                    },
+                                                                    "Property": "Revenue - Selected Period"
+                                                                }
+                                                            },
+                                                            "Right": {
+                                                                "Literal": {
+                                                                    "Value": "0D"
+                                                                }
+                                                            }
+                                                        }
+                                                    },
+                                                    "Value": {
+                                                        "Literal": {
+                                                            "Value": "'#7b282e'"
+                                                        }
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "valueFontSize": {
+                            "expr": {
+                                "Literal": {
+                                    "Value": "14D"
+                                }
+                            }
+                        }
+                    },
+                    "selector": {
+                        "id": "default"
+                    }
+                },
+                {
+                    "properties": {
+                        "valueFontColor": {
+                            "solid": {
+                                "color": {
+                                    "expr": {
+                                        "Conditional": {
+                                            "Cases": [
+                                                {
+                                                    "Condition": {
+                                                        "Comparison": {
+                                                            "ComparisonKind": 1,
+                                                            "Left": {
+                                                                "Measure": {
+                                                                    "Expression": {
+                                                                        "SourceRef": {
+                                                                            "Entity": "_Measures"
+                                                                        }
+                                                                    },
+                                                                    "Property": "Revenue Change %"
+                                                                }
+                                                            },
+                                                            "Right": {
+                                                                "Literal": {
+                                                                    "Value": "0D"
+                                                                }
+                                                            }
+                                                        }
+                                                    },
+                                                    "Value": {
+                                                        "Literal": {
+                                                            "Value": "'#217c60'"
+                                                        }
+                                                    }
+                                                },
+                                                {
+                                                    "Condition": {
+                                                        "Comparison": {
+                                                            "ComparisonKind": 0,
+                                                            "Left": {
+                                                                "Measure": {
+                                                                    "Expression": {
+                                                                        "SourceRef": {
+                                                                            "Entity": "_Measures"
+                                                                        }
+                                                                    },
+                                                                    "Property": "Revenue Change %"
+                                                                }
+                                                            },
+                                                            "Right": {
+                                                                "Literal": {
+                                                                    "Value": "0D"
+                                                                }
+                                                            }
+                                                        }
+                                                    },
+                                                    "Value": {
+                                                        "Literal": {
+                                                            "Value": "'#666666'"
+                                                        }
+                                                    }
+                                                },
+                                                {
+                                                    "Condition": {
+                                                        "Comparison": {
+                                                            "ComparisonKind": 3,
+                                                            "Left": {
+                                                                "Measure": {
+                                                                    "Expression": {
+                                                                        "SourceRef": {
+                                                                            "Entity": "_Measures"
+                                                                        }
+                                                                    },
+                                                                    "Property": "Revenue Change %"
+                                                                }
+                                                            },
+                                                            "Right": {
+                                                                "Literal": {
+                                                                    "Value": "0D"
+                                                                }
+                                                            }
+                                                        }
+                                                    },
+                                                    "Value": {
+                                                        "Literal": {
+                                                            "Value": "'#7b282e'"
+                                                        }
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "selector": {
+                        "data": [
+                            {
+                                "dataViewWildcard": {
+                                    "matchingOption": 0
+                                }
+                            }
+                        ],
+                        "metadata": "_Measures.Revenue - Selected Period",
+                        "id": "field-ebafed9c-d365-7657-af6a-64209b84b513"
+                    }
+                },
+                {
+                    "properties": {
+                        "valueFontColor": {
+                            "solid": {
+                                "color": {
+                                    "expr": {
+                                        "Conditional": {
+                                            "Cases": [
+                                                {
+                                                    "Condition": {
+                                                        "Comparison": {
+                                                            "ComparisonKind": 1,
+                                                            "Left": {
+                                                                "Measure": {
+                                                                    "Expression": {
+                                                                        "SourceRef": {
+                                                                            "Entity": "_Measures"
+                                                                        }
+                                                                    },
+                                                                    "Property": "Units Change %"
+                                                                }
+                                                            },
+                                                            "Right": {
+                                                                "Literal": {
+                                                                    "Value": "0D"
+                                                                }
+                                                            }
+                                                        }
+                                                    },
+                                                    "Value": {
+                                                        "Literal": {
+                                                            "Value": "'#217c60'"
+                                                        }
+                                                    }
+                                                },
+                                                {
+                                                    "Condition": {
+                                                        "Comparison": {
+                                                            "ComparisonKind": 0,
+                                                            "Left": {
+                                                                "Measure": {
+                                                                    "Expression": {
+                                                                        "SourceRef": {
+                                                                            "Entity": "_Measures"
+                                                                        }
+                                                                    },
+                                                                    "Property": "Units Change %"
+                                                                }
+                                                            },
+                                                            "Right": {
+                                                                "Literal": {
+                                                                    "Value": "0D"
+                                                                }
+                                                            }
+                                                        }
+                                                    },
+                                                    "Value": {
+                                                        "Literal": {
+                                                            "Value": "'#666666'"
+                                                        }
+                                                    }
+                                                },
+                                                {
+                                                    "Condition": {
+                                                        "Comparison": {
+                                                            "ComparisonKind": 3,
+                                                            "Left": {
+                                                                "Measure": {
+                                                                    "Expression": {
+                                                                        "SourceRef": {
+                                                                            "Entity": "_Measures"
+                                                                        }
+                                                                    },
+                                                                    "Property": "Units Change %"
+                                                                }
+                                                            },
+                                                            "Right": {
+                                                                "Literal": {
+                                                                    "Value": "0D"
+                                                                }
+                                                            }
+                                                        }
+                                                    },
+                                                    "Value": {
+                                                        "Literal": {
+                                                            "Value": "'#7b282e'"
+                                                        }
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "selector": {
+                        "data": [
+                            {
+                                "dataViewWildcard": {
+                                    "matchingOption": 0
+                                }
+                            }
+                        ],
+                        "metadata": "_Measures.Units - Selected Period",
+                        "id": "field-d59c191f-2ca9-6ef0-7780-9a724d2a0278"
+                    }
+                },
+                {
+                    "properties": {
+                        "valueFontColor": {
+                            "solid": {
+                                "color": {
+                                    "expr": {
+                                        "Conditional": {
+                                            "Cases": [
+                                                {
+                                                    "Condition": {
+                                                        "Comparison": {
+                                                            "ComparisonKind": 1,
+                                                            "Left": {
+                                                                "Measure": {
+                                                                    "Expression": {
+                                                                        "SourceRef": {
+                                                                            "Entity": "_Measures"
+                                                                        }
+                                                                    },
+                                                                    "Property": "Gross Margin Period Change pp"
+                                                                }
+                                                            },
+                                                            "Right": {
+                                                                "Literal": {
+                                                                    "Value": "0D"
+                                                                }
+                                                            }
+                                                        }
+                                                    },
+                                                    "Value": {
+                                                        "Literal": {
+                                                            "Value": "'#217c60'"
+                                                        }
+                                                    }
+                                                },
+                                                {
+                                                    "Condition": {
+                                                        "Comparison": {
+                                                            "ComparisonKind": 0,
+                                                            "Left": {
+                                                                "Measure": {
+                                                                    "Expression": {
+                                                                        "SourceRef": {
+                                                                            "Entity": "_Measures"
+                                                                        }
+                                                                    },
+                                                                    "Property": "Gross Margin Period Change pp"
+                                                                }
+                                                            },
+                                                            "Right": {
+                                                                "Literal": {
+                                                                    "Value": "0D"
+                                                                }
+                                                            }
+                                                        }
+                                                    },
+                                                    "Value": {
+                                                        "Literal": {
+                                                            "Value": "'#666666'"
+                                                        }
+                                                    }
+                                                },
+                                                {
+                                                    "Condition": {
+                                                        "Comparison": {
+                                                            "ComparisonKind": 3,
+                                                            "Left": {
+                                                                "Measure": {
+                                                                    "Expression": {
+                                                                        "SourceRef": {
+                                                                            "Entity": "_Measures"
+                                                                        }
+                                                                    },
+                                                                    "Property": "Gross Margin Period Change pp"
+                                                                }
+                                                            },
+                                                            "Right": {
+                                                                "Literal": {
+                                                                    "Value": "0D"
+                                                                }
+                                                            }
+                                                        }
+                                                    },
+                                                    "Value": {
+                                                        "Literal": {
+                                                            "Value": "'#7b282e'"
+                                                        }
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "selector": {
+                        "data": [
+                            {
+                                "dataViewWildcard": {
+                                    "matchingOption": 0
+                                }
+                            }
+                        ],
+                        "metadata": "_Measures.Gross Margin % - Selected Period",
+                        "id": "field-1af39698-9473-9cb6-3728-f10ade3e3938"
+                    }
+                }
+            ],
+            "referenceLabelLayout": [
+                {
+                    "properties": {
+                        "position": {
+                            "expr": {
+                                "Literal": {
+                                    "Value": "'below'"
+                                }
+                            }
+                        },
+                        "arrangement": {
+                            "expr": {
+                                "Literal": {
+                                    "Value": "'rows'"
+                                }
+                            }
+                        },
+                        "horizontalAlignment": {
+                            "expr": {
+                                "Literal": {
+                                    "Value": "'left'"
+                                }
+                            }
+                        }
+                    },
+                    "selector": {
+                        "id": "default"
+                    }
+                }
+            ],
+            "layout": [
+                {
+                    "properties": {
+                        "contentOrder": {
+                            "expr": {
+                                "Literal": {
+                                    "Value": "'callout_image_referenceLabel'"
+                                }
+                            }
+                        },
+                        "orientation": {
+                            "expr": {
+                                "Literal": {
+                                    "Value": "2D"
+                                }
+                            }
+                        }
+                    }
+                }
+            ],
+            "padding": [
+                {
+                    "properties": {
+                        "bottomMargin": {
+                            "expr": {
+                                "Literal": {
+                                    "Value": "0L"
+                                }
+                            }
+                        },
+                        "topMargin": {
+                            "expr": {
+                                "Literal": {
+                                    "Value": "14L"
+                                }
+                            }
+                        }
+                    },
+                    "selector": {
+                        "id": "default"
+                    }
+                }
+            ]
+        },
+        "visualContainerObjects": {
+            "title": [
+                {
+                    "properties": {
+                        "show": {
+                            "expr": {
+                                "Literal": {
+                                    "Value": "false"
+                                }
+                            }
+                        },
+                        "text": {
+                            "expr": {
+                                "Literal": {
+                                    "Value": "'Replenishment Risks'"
+                                }
+                            }
+                        }
+                    }
+                }
+            ],
+            "subTitle": [
+                {
+                    "properties": {
+                        "text": {
+                            "expr": {
+                                "Literal": {
+                                    "Value": "'Low-supply store-product pairs'"
+                                }
+                            }
+                        },
+                        "show": {
+                            "expr": {
+                                "Literal": {
+                                    "Value": "true"
+                                }
+                            }
+                        },
+                        "titleWrap": {
+                            "expr": {
+                                "Literal": {
+                                    "Value": "true"
+                                }
+                            }
+                        }
+                    }
+                }
+            ]
+        },
+        "drillFilterOtherVisuals": true
+    }
+}

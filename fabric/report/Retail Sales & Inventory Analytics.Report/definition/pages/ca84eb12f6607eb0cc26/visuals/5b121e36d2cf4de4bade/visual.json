@@ -1,0 +1,364 @@
+{
+    "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.12.0/schema.json",
+    "name": "5b121e36d2cf4de4bade",
+    "position": {
+        "x": 29.03914590747331,
+        "y": 351.88612099644126,
+        "z": 1000,
+        "height": 688.3985765124555,
+        "width": 693.5231316725979,
+        "tabOrder": 1000
+    },
+    "visual": {
+        "visualType": "scatterChart",
+        "query": {
+            "queryState": {
+                "Category": {
+                    "projections": [
+                        {
+                            "field": {
+                                "Column": {
+                                    "Expression": {
+                                        "SourceRef": {
+                                            "Entity": "dim_store"
+                                        }
+                                    },
+                                    "Property": "store_name"
+                                }
+                            },
+                            "queryRef": "dim_store.store_name",
+                            "nativeQueryRef": "Store",
+                            "active": true,
+                            "displayName": "Store"
+                        }
+                    ]
+                },
+                "Series": {
+                    "projections": [
+                        {
+                            "field": {
+                                "Column": {
+                                    "Expression": {
+                                        "SourceRef": {
+                                            "Entity": "dim_store"
+                                        }
+                                    },
+                                    "Property": "store_location"
+                                }
+                            },
+                            "queryRef": "dim_store.store_location",
+                            "nativeQueryRef": "Location",
+                            "displayName": "Location"
+                        }
+                    ]
+                },
+                "Size": {
+                    "projections": [
+                        {
+                            "field": {
+                                "Measure": {
+                                    "Expression": {
+                                        "SourceRef": {
+                                            "Entity": "_Measures"
+                                        }
+                                    },
+                                    "Property": "Revenue - Selected Period"
+                                }
+                            },
+                            "queryRef": "_Measures.Revenue - Selected Period",
+                            "nativeQueryRef": "Revenue",
+                            "displayName": "Revenue"
+                        }
+                    ]
+                },
+                "Tooltips": {
+                    "projections": [
+                        {
+                            "field": {
+                                "Aggregation": {
+                                    "Expression": {
+                                        "Column": {
+                                            "Expression": {
+                                                "SourceRef": {
+                                                    "Entity": "dim_store"
+                                                }
+                                            },
+                                            "Property": "store_city"
+                                        }
+                                    },
+                                    "Function": 3
+                                }
+                            },
+                            "queryRef": "Min(dim_store.store_city)",
+                            "nativeQueryRef": "City",
+                            "displayName": "City"
+                        },
+                        {
+                            "field": {
+                                "Measure": {
+                                    "Expression": {
+                                        "SourceRef": {
+                                            "Entity": "_Measures"
+                                        }
+                                    },
+                                    "Property": "Gross Margin % - Selected Period"
+                                }
+                            },
+                            "queryRef": "_Measures.Gross Margin % - Selected Period",
+                            "nativeQueryRef": "Margin",
+                            "displayName": "Margin"
+                        },
+                        {
+                            "field": {
+                                "Measure": {
+                                    "Expression": {
+                                        "SourceRef": {
+                                            "Entity": "_Measures"
+                                        }
+                                    },
+                                    "Property": "Units Change %"
+                                }
+                            },
+                            "queryRef": "_Measures.Units Change %",
+                            "nativeQueryRef": "Units Change",
+                            "displayName": "Units Change"
+                        }
+                    ]
+                },
+                "X": {
+                    "projections": [
+                        {
+                            "field": {
+                                "Measure": {
+                                    "Expression": {
+                                        "SourceRef": {
+                                            "Entity": "_Measures"
+                                        }
+                                    },
+                                    "Property": "Revenue Change %"
+                                }
+                            },
+                            "queryRef": "_Measures.Revenue Change %",
+                            "nativeQueryRef": "Revenue Change %",
+                            "active": true
+                        }
+                    ]
+                },
+                "Y": {
+                    "projections": [
+                        {
+                            "field": {
+                                "Measure": {
+                                    "Expression": {
+                                        "SourceRef": {
+                                            "Entity": "_Measures"
+                                        }
+                                    },
+                                    "Property": "Gross Margin Period Change pp"
+                                }
+                            },
+                            "queryRef": "_Measures.Gross Margin Period Change pp",
+                            "nativeQueryRef": "Margin Change (pp)",
+                            "displayName": "Margin Change (pp)"
+                        }
+                    ]
+                }
+            }
+        },
+        "objects": {
+            "categoryAxis": [
+                {
+                    "properties": {
+                        "fontSize": {
+                            "expr": {
+                                "Literal": {
+                                    "Value": "12D"
+                                }
+                            }
+                        },
+                        "titleFontSize": {
+                            "expr": {
+                                "Literal": {
+                                    "Value": "12D"
+                                }
+                            }
+                        }
+                    }
+                }
+            ],
+            "valueAxis": [
+                {
+                    "properties": {
+                        "fontSize": {
+                            "expr": {
+                                "Literal": {
+                                    "Value": "12D"
+                                }
+                            }
+                        },
+                        "titleFontSize": {
+                            "expr": {
+                                "Literal": {
+                                    "Value": "12D"
+                                }
+                            }
+                        }
+                    }
+                }
+            ],
+            "xAxisReferenceLine": [
+                {
+                    "properties": {
+                        "show": {
+                            "expr": {
+                                "Literal": {
+                                    "Value": "true"
+                                }
+                            }
+                        },
+                        "displayName": {
+                            "expr": {
+                                "Literal": {
+                                    "Value": "'No Revenue Change'"
+                                }
+                            }
+                        },
+                        "lineColor": {
+                            "solid": {
+                                "color": {
+                                    "expr": {
+                                        "Literal": {
+                                            "Value": "'#98A2B3'"
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "transparency": {
+                            "expr": {
+                                "Literal": {
+                                    "Value": "30D"
+                                }
+                            }
+                        },
+                        "width": {
+                            "expr": {
+                                "Literal": {
+                                    "Value": "2D"
+                                }
+                            }
+                        },
+                        "dataLabelShow": {
+                            "expr": {
+                                "Literal": {
+                                    "Value": "false"
+                                }
+                            }
+                        }
+                    },
+                    "selector": {
+                        "id": "1"
+                    }
+                }
+            ],
+            "y1AxisReferenceLine": [
+                {
+                    "properties": {
+                        "show": {
+                            "expr": {
+                                "Literal": {
+                                    "Value": "true"
+                                }
+                            }
+                        },
+                        "displayName": {
+                            "expr": {
+                                "Literal": {
+                                    "Value": "'No Margin Change'"
+                                }
+                            }
+                        },
+                        "lineColor": {
+                            "solid": {
+                                "color": {
+                                    "expr": {
+                                        "Literal": {
+                                            "Value": "'#98A2B3'"
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "transparency": {
+                            "expr": {
+                                "Literal": {
+                                    "Value": "30D"
+                                }
+                            }
+                        },
+                        "width": {
+                            "expr": {
+                                "Literal": {
+                                    "Value": "2D"
+                                }
+                            }
+                        },
+                        "shadeShow": {
+                            "expr": {
+                                "Literal": {
+                                    "Value": "false"
+                                }
+                            }
+                        }
+                    },
+                    "selector": {
+                        "id": "1"
+                    }
+                }
+            ]
+        },
+        "visualContainerObjects": {
+            "title": [
+                {
+                    "properties": {
+                        "text": {
+                            "expr": {
+                                "Literal": {
+                                    "Value": "'Store Growth vs Margin Change'"
+                                }
+                            }
+                        },
+                        "fontSize": {
+                            "expr": {
+                                "Literal": {
+                                    "Value": "18D"
+                                }
+                            }
+                        }
+                    }
+                }
+            ],
+            "subTitle": [
+                {
+                    "properties": {
+                        "show": {
+                            "expr": {
+                                "Literal": {
+                                    "Value": "true"
+                                }
+                            }
+                        },
+                        "text": {
+                            "expr": {
+                                "Literal": {
+                                    "Value": "'Revenue and margin movement versus the previous period'"
+                                }
+                            }
+                        }
+                    }
+                }
+            ]
+        },
+        "drillFilterOtherVisuals": true
+    }
+}

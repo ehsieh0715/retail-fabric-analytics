@@ -1,0 +1,25 @@
+model Model
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: en-US
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation __PBI_TimeIntelligenceEnabled = 1
+
+annotation PBI_QueryOrder = ["DirectLake - lh_retail_analytics"]
+
+annotation PBI_ProTooling = ["DirectLakeOnOneLakeInWeb","WebModelingEdit","DaxQueryView_Desktop"]
+
+ref table fact_inventory_position
+ref table dim_store
+ref table dim_product
+ref table dim_date
+ref table fact_sales
+ref table 'Report Date'
+ref table DateTableTemplate_84315414-76c4-45c8-aca2-3cae2224e0e6
+ref table LocalDateTable_8db5c522-ca9e-44c3-bead-bac51316c6b9
+ref table 'Analysis Period'
+ref table _Measures
+

@@ -1,0 +1,27 @@
+table 'Report Date'
+	lineageTag: 0e4ba749-914b-4599-b773-776416be9ae0
+
+	column 'Report Date'
+		formatString: General Date
+		lineageTag: cee36c81-1949-48a7-a9ac-ed2ea301fa0f
+		summarizeBy: none
+		sourceColumn: [Date]
+
+		variation Variation
+			isDefault
+			relationship: e739e0b1-8cda-4748-95c3-f476303ea6c6
+			defaultHierarchy: LocalDateTable_8db5c522-ca9e-44c3-bead-bac51316c6b9.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Report Date' = calculated
+		mode: import
+		source =
+				
+				CALENDAR (
+				    DATE ( 2022, 1, 1 ),
+				    DATE ( 2023, 9, 30 )
+				)
+
+	annotation PBI_Id = 2e98e8d327124f0ca8ecd69a0e88477e
+

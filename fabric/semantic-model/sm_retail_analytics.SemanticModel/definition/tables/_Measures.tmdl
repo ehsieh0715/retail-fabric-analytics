@@ -1,0 +1,940 @@
+table _Measures
+	lineageTag: 9e612320-be16-45e4-be7c-3a6782db490e
+
+	measure 'Latest Sales Date' =
+			
+			CALCULATE(
+			    MAX(dim_date[calendar_date]),
+			    REMOVEFILTERS(dim_date),
+			    fact_sales
+			)
+		formatString: General Date
+		isHidden
+		displayFolder: 00 Controls
+		lineageTag: c2a6c543-6540-450b-9398-6eec60610336
+
+		changedProperty = Name
+
+		changedProperty = DisplayFolder
+
+		changedProperty = IsHidden
+
+	measure 'Selected Report Date' =
+			
+			COALESCE (
+			    SELECTEDVALUE ( 'Report Date'[Report Date] ),
+			    [Latest Sales Date]
+			)
+		isHidden
+		displayFolder: 00 Controls
+		lineageTag: 852e8ec9-a85d-49ec-80ac-e488336204f0
+
+	measure 'Selected Period Days' =
+			
+			SELECTEDVALUE (
+			    'Analysis Period'[Days],
+			    7
+			)
+		formatString: 0
+		isHidden
+		displayFolder: 00 Controls
+		lineageTag: 7a888673-d719-4c8d-90fc-9699ec37882c
+
+	measure 'Total Revenue' =
+			
+			SUM(fact_sales[sales_amount])
+		formatString: \$#,0.0;(\$#,0.0);\$#,0.0
+		displayFolder: 01 Base
+		lineageTag: 6f92190e-da73-4f2f-ac55-0f98f2a70aee
+
+		changedProperty = Name
+
+		changedProperty = FormatString
+
+		changedProperty = DisplayFolder
+
+		changedProperty = IsHidden
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	measure 'Total Units' =
+			
+			SUM(fact_sales[units])
+		formatString: 0
+		displayFolder: 01 Base
+		lineageTag: 8e796154-a254-49c1-a5ce-7a2dbd6bfa2d
+
+		changedProperty = Name
+
+		changedProperty = DisplayFolder
+
+		changedProperty = IsHidden
+
+	measure 'Gross Profit' =
+			
+			SUM(fact_sales[gross_profit])
+		formatString: \$#,0.0;(\$#,0.0);\$#,0.0
+		displayFolder: 01 Base
+		lineageTag: 14e849f1-766a-47cc-9a48-99550ab070cd
+
+		changedProperty = Name
+
+		changedProperty = FormatString
+
+		changedProperty = DisplayFolder
+
+		changedProperty = IsHidden
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	measure 'Gross Margin %' = ```
+			
+			        DIVIDE(
+			            [Gross Profit],
+			            [Total Revenue]
+			        )
+			```
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: 01 Base
+		lineageTag: 55c4f5aa-d7b1-4c8f-bbf5-b85bbad051d6
+
+		changedProperty = Name
+
+		changedProperty = FormatString
+
+		changedProperty = DisplayFolder
+
+		changedProperty = IsHidden
+
+	measure 'Revenue - Selected Period' =
+			
+			VAR EndDate =
+			    [Selected Report Date]
+			VAR NumberOfDays =
+			    [Selected Period Days]
+			VAR StartDate =
+			    EndDate - NumberOfDays + 1
+			VAR Result =
+			    CALCULATE (
+			        [Total Revenue],
+			        REMOVEFILTERS ( dim_date ),
+			        DATESBETWEEN (
+			            dim_date[calendar_date],
+			            StartDate,
+			            EndDate
+			        )
+			    )
+			RETURN
+			    COALESCE ( Result, 0 )
+		formatString: \$#,0.0;(\$#,0.0);\$#,0.0
+		displayFolder: 02 Period\Revenue
+		lineageTag: 2cad113b-ae50-4534-b417-57f8c8afcf30
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	measure 'Revenue - Previous Period' =
+			
+			VAR EndDate =
+			    [Selected Report Date]
+			VAR NumberOfDays =
+			    [Selected Period Days]
+			VAR PreviousEndDate =
+			    IF (
+			        NumberOfDays = 1,
+			        EndDate - 7,
+			        EndDate - NumberOfDays
+			    )
+			VAR PreviousStartDate =
+			    IF (
+			        NumberOfDays = 1,
+			        PreviousEndDate,
+			        PreviousEndDate - NumberOfDays + 1
+			    )
+			VAR Result =
+			    CALCULATE (
+			        [Total Revenue],
+			        REMOVEFILTERS ( dim_date ),
+			        DATESBETWEEN (
+			            dim_date[calendar_date],
+			            PreviousStartDate,
+			            PreviousEndDate
+			        )
+			    )
+			RETURN
+			    COALESCE ( Result, 0 )
+		formatString: \$#,0.0;(\$#,0.0);\$#,0.0
+		displayFolder: 02 Period\Revenue
+		lineageTag: 748e8423-2bdc-4029-900d-b76e679a5d9a
+
+		changedProperty = DisplayFolder
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	measure 'Revenue Change %' =
+			
+			DIVIDE (
+			    [Revenue - Selected Period]
+			        - [Revenue - Previous Period],
+			    [Revenue - Previous Period]
+			)
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: 02 Period\Revenue
+		lineageTag: 6aa66720-393b-445d-a91e-17d168cc92c5
+
+	measure 'Units - Selected Period' = ```
+			
+			VAR EndDate =
+			    [Selected Report Date]
+			VAR NumberOfDays =
+			    [Selected Period Days]
+			VAR StartDate =
+			    EndDate - NumberOfDays + 1
+			VAR Result = 
+			    CALCULATE (
+			        [Total Units],
+			        REMOVEFILTERS ( dim_date ),
+			        DATESBETWEEN (
+			            dim_date[calendar_date],
+			            StartDate,
+			            EndDate
+			        )
+			    )
+			RETURN
+			    COALESCE ( Result, 0 )
+			```
+		formatString: 0
+		displayFolder: 02 Period\Units
+		lineageTag: 3493afc8-3d65-4205-960b-109810d75506
+
+	measure 'Units - Previous Period' =
+			
+			VAR EndDate =
+			    [Selected Report Date]
+			VAR NumberOfDays =
+			    [Selected Period Days]
+			VAR PreviousEndDate =
+			    IF (
+			        NumberOfDays = 1,
+			        EndDate - 7,
+			        EndDate - NumberOfDays
+			    )
+			VAR PreviousStartDate =
+			    PreviousEndDate - NumberOfDays + 1
+			VAR Result =
+			    CALCULATE (
+			        [Total Units],
+			        REMOVEFILTERS ( dim_date ),
+			        DATESBETWEEN (
+			            dim_date[calendar_date],
+			            PreviousStartDate,
+			            PreviousEndDate
+			        )
+			    )
+			RETURN
+			    COALESCE ( Result, 0 )
+		formatString: 0
+		displayFolder: 02 Period\Units
+		lineageTag: 6122080a-bf0d-4772-ba23-f66246b5ffb5
+
+	measure 'Units Change %' =
+			
+			DIVIDE (
+			    [Units - Selected Period]
+			        - [Units - Previous Period],
+			    [Units - Previous Period]
+			)
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: 02 Period\Units
+		lineageTag: 633fd737-a0b6-495f-9d5b-805196f2d10d
+
+	measure 'Gross Profit - Selected Period' =
+			
+			VAR EndDate =
+			    [Selected Report Date]
+			VAR NumberOfDays =
+			    [Selected Period Days]
+			VAR StartDate =
+			    EndDate - NumberOfDays + 1
+			VAR Result =
+			    CALCULATE (
+			        [Gross Profit],
+			        REMOVEFILTERS ( dim_date ),
+			        DATESBETWEEN (
+			            dim_date[calendar_date],
+			            StartDate,
+			            EndDate
+			        )
+			    )
+			RETURN
+			    COALESCE ( Result, 0 )
+		formatString: \$#,0.0;(\$#,0.0);\$#,0.0
+		displayFolder: 02 Period\Profit
+		lineageTag: 75ce9430-70e7-4cc6-ac7b-bbf559b1d61d
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	measure 'Gross Profit - Previous Period' =
+			
+			VAR EndDate =
+			    [Selected Report Date]
+			VAR NumberOfDays =
+			    [Selected Period Days]
+			VAR PreviousEndDate =
+			    IF (
+			        NumberOfDays = 1,
+			        EndDate - 7,
+			        EndDate - NumberOfDays
+			    )
+			VAR PreviousStartDate =
+			    PreviousEndDate - NumberOfDays + 1
+			VAR Result =
+			    CALCULATE (
+			        [Gross Profit],
+			        REMOVEFILTERS ( dim_date ),
+			        DATESBETWEEN (
+			            dim_date[calendar_date],
+			            PreviousStartDate,
+			            PreviousEndDate
+			        )
+			    )
+			RETURN
+			    COALESCE ( Result, 0 )
+		formatString: \$#,0.0;(\$#,0.0);\$#,0.0
+		displayFolder: 02 Period\Profit
+		lineageTag: 2a9caaee-160a-4d2a-bbbd-2933bed68897
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	measure 'Gross Profit Change %' =
+			
+			DIVIDE (
+			    [Gross Profit - Selected Period]
+			        - [Gross Profit - Previous Period],
+			    [Gross Profit - Previous Period]
+			)
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: 02 Period\Profit
+		lineageTag: 8b697dcd-ffb8-480c-8373-103c15e661b1
+
+	measure 'Gross Margin Period Change pp' =
+			
+			(
+			    [Gross Margin % - Selected Period]
+			        - [Gross Margin % - Previous Period]
+			)
+			    * 100
+		formatString: 0.0 "pp";-0.0 "pp";0.0 "pp"
+		displayFolder: 02 Period\Margin
+		lineageTag: b96d671d-d750-486e-8f9b-eff176f32354
+
+		annotation PBI_FormatHint = {"isCustom":true}
+
+	measure 'Gross Margin % - Previous Period' =
+			
+			DIVIDE (
+			    [Gross Profit - Previous Period],
+			    [Revenue - Previous Period]
+			)
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: 02 Period\Margin
+		lineageTag: 013149e8-05ba-4871-a2fd-ad29b5cb2613
+
+	measure 'Gross Margin % - Selected Period' =
+			
+			DIVIDE (
+			    [Gross Profit - Selected Period],
+			    [Revenue - Selected Period]
+			)
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: 02 Period\Margin
+		lineageTag: 5bbb238d-6ea0-4896-a969-cc19a65a814a
+
+	measure 'Current Stock On Hand' =
+			
+			SUM ( fact_inventory_position[stock_on_hand] )
+		formatString: 0
+		displayFolder: 03 Inventory
+		lineageTag: 10c87825-a427-4085-98be-317182397990
+
+		changedProperty = Name
+
+		changedProperty = DisplayFolder
+
+		changedProperty = IsHidden
+
+	measure 'Recent 30-Day Units' =
+			
+			VAR EndDate =
+			    [Latest Sales Date]
+			VAR StartDate =
+			    EndDate - 29
+			RETURN
+			    CALCULATE (
+			        [Total Units],
+			        REMOVEFILTERS ( dim_date ),
+			        DATESBETWEEN (
+			            dim_date[calendar_date],
+			            StartDate,
+			            EndDate
+			        )
+			    )
+		formatString: 0
+		displayFolder: 03 Inventory
+		lineageTag: c9e00933-1bfc-4a50-a4c6-322074965219
+
+		changedProperty = Name
+
+		changedProperty = DisplayFolder
+
+		changedProperty = IsHidden
+
+	measure 'Average Daily Units - Recent 30 Days' =
+			
+			DIVIDE (
+			    [Recent 30-Day Units],
+			    30
+			)
+		displayFolder: 03 Inventory
+		lineageTag: 4138bf29-d6dd-4966-8caa-64e7d6f1d576
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Days of Supply' =
+			
+			VAR Stock =
+			    [Current Stock On Hand]
+			VAR AverageDailyUnits =
+			    [Average Daily Units - Recent 30 Days]
+			RETURN
+			    IF (
+			        AverageDailyUnits > 0,
+			        DIVIDE (
+			            Stock,
+			            AverageDailyUnits
+			        )
+			    )
+		formatString: 0.0
+		displayFolder: 03 Inventory
+		lineageTag: 3a8255de-4a0a-45ee-92f4-11a9b90ea9e4
+
+		changedProperty = Name
+
+		changedProperty = FormatString
+
+		changedProperty = DisplayFolder
+
+		changedProperty = IsHidden
+
+	measure 'Supply Status' =
+			
+			VAR Stock =
+			    [Current Stock On Hand]
+			VAR RecentUnits =
+			    [Recent 30-Day Units]
+			VAR SupplyDays =
+			    [Days of Supply]
+			RETURN
+			    SWITCH (
+			        TRUE (),
+			
+			        ISBLANK ( Stock ),
+			            BLANK (),
+			
+			        Stock = 0 && RecentUnits > 0,
+			            "Out of Stock",
+			
+			        RecentUnits = 0,
+			            "No Recent Demand",
+			
+			        SupplyDays < 3,
+			            "Critical",
+			
+			        SupplyDays < 7,
+			            "Warning",
+			
+			        "Normal"
+			    )
+		displayFolder: 03 Inventory
+		lineageTag: 0d7d6fcb-f593-462c-8828-6dc4d2f43dcf
+
+	measure 'Performance Period Subtitle' =
+			
+			VAR ReportDate =
+			    [Selected Report Date]
+			VAR NumberOfDays =
+			    [Selected Period Days]
+			VAR PreviousEndDate =
+			    IF (
+			        NumberOfDays = 1,
+			        ReportDate - 7,
+			        ReportDate - NumberOfDays
+			    )
+			RETURN
+			    SWITCH (
+			        TRUE (),
+			
+			        NumberOfDays = 1,
+			            "Performance on "
+			                & FORMAT ( ReportDate, "dd MMM yyyy", "en-GB" )
+			                & " · compared with "
+			                & FORMAT ( PreviousEndDate, "dd MMM yyyy", "en-GB" )
+			                & " (same weekday last week)",
+			
+			        NumberOfDays = 7,
+			            "7-day performance through "
+			                & FORMAT ( ReportDate, "dd MMM yyyy", "en-GB" )
+			                & " · compared with the previous 7 days",
+			
+			        NumberOfDays = 30,
+			            "30-day performance through "
+			                & FORMAT ( ReportDate, "dd MMM yyyy", "en-GB" )
+			                & " · compared with the previous 30 days",
+			
+			        NumberOfDays & "-day performance through "
+			            & FORMAT ( ReportDate, "dd MMM yyyy", "en-GB" )
+			            & " · compared with the previous "
+			            & NumberOfDays & " days"
+			    )
+		displayFolder: 05 Display Text
+		lineageTag: 1d3a3405-8f5c-4e37-9b66-46e72d106ccd
+
+	measure 'Revenue - 12 Week Trend' =
+			
+			VAR ReportDate =
+			    [Selected Report Date]
+			
+			VAR ReportWeekStart =
+			    ReportDate
+			        - WEEKDAY ( ReportDate, 2 )
+			        + 1
+			
+			VAR TrendStartWeek =
+			    ReportWeekStart - 77
+			
+			VAR AxisWeekStart =
+			    SELECTEDVALUE ( dim_date[week_start_date] )
+			
+			VAR AxisWeekEnd =
+			    AxisWeekStart + 6
+			
+			VAR EffectiveWeekEnd =
+			    MIN ( AxisWeekEnd, ReportDate )
+			
+			VAR IsVisibleWeek =
+			    AxisWeekStart >= TrendStartWeek
+			        && AxisWeekStart <= ReportWeekStart
+			
+			RETURN
+			    IF (
+			        IsVisibleWeek,
+			        CALCULATE (
+			            [Total Revenue],
+			            REMOVEFILTERS ( dim_date ),
+			            DATESBETWEEN (
+			                dim_date[calendar_date],
+			                AxisWeekStart,
+			                EffectiveWeekEnd
+			            )
+			        )
+			    )
+		formatString: \$#,0.0;(\$#,0.0);\$#,0.0
+		displayFolder: 02 Period\Revenue
+		lineageTag: 99cc64d2-2829-4a92-af11-f977c4e85323
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	measure 'Store Attention Flag' =
+			
+			VAR RevenueChange =
+			    [Revenue Change %]
+			VAR MarginChange =
+			    [Gross Margin Period Change pp]
+			
+			VAR RevenueRequiresAttention =
+			    NOT ISBLANK ( RevenueChange )
+			        && RevenueChange <= -0.10
+			
+			VAR MarginRequiresAttention =
+			    NOT ISBLANK ( MarginChange )
+			        && MarginChange <= -2
+			
+			RETURN
+			    IF (
+			        RevenueRequiresAttention
+			            || MarginRequiresAttention,
+			        1,
+			        0
+			    )
+		formatString: 0
+		displayFolder: 04 Attension
+		lineageTag: f60d39f3-47ae-4ee5-8a59-a4e1ff277229
+
+	measure 'Stores Requiring Attention Count' =
+			
+			SUMX (
+			    VALUES ( dim_store[store_id] ),
+			    [Store Attention Flag]
+			)
+		formatString: 0
+		displayFolder: 04 Attension
+		lineageTag: e9c1fa68-0ab9-491e-bb8b-2ad825249553
+
+	measure 'Replenishment Risk Position Count' =
+			
+			VAR StoreProductPositions =
+			    CROSSJOIN (
+			        VALUES ( dim_store[store_id] ),
+			        VALUES ( dim_product[product_id] )
+			    )
+			RETURN
+			    COUNTROWS (
+			        FILTER (
+			            StoreProductPositions,
+			
+			            VAR Stock =
+			                CALCULATE (
+			                    [Current Stock On Hand]
+			                )
+			
+			            VAR RecentUnits =
+			                CALCULATE (
+			                    [Recent 30-Day Units]
+			                )
+			
+			            VAR SupplyDays =
+			                CALCULATE (
+			                    [Days of Supply]
+			                )
+			
+			            RETURN
+			                NOT ISBLANK ( Stock )
+			                    && RecentUnits > 0
+			                    && SupplyDays < 7
+			        )
+			    )
+		formatString: 0
+		displayFolder: 03 Inventory
+		lineageTag: 5f393e0d-d6a9-4867-a2b9-96177de5fa4a
+
+	measure 'Transaction Count' =
+			
+			DISTINCTCOUNT(fact_sales[sale_id])
+		formatString: 0
+		displayFolder: 01 Base
+		lineageTag: 7502ce7f-ee1e-4a3f-a7b5-d5267509feec
+
+		changedProperty = Name
+
+		changedProperty = DisplayFolder
+
+		changedProperty = IsHidden
+
+	measure 'Average Transaction Value' =
+			
+			DIVIDE(
+			    [Total Revenue],
+			    [Transaction Count]
+			)
+		formatString: \$#,0.0;(\$#,0.0);\$#,0.0
+		displayFolder: 01 Base
+		lineageTag: 457dadcf-29be-4ff3-bf23-761dd983a9b4
+
+		changedProperty = Name
+
+		changedProperty = FormatString
+
+		changedProperty = DisplayFolder
+
+		changedProperty = IsHidden
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	measure 'Average Units per Transaction' =
+			
+			DIVIDE(
+			    [Total Units],
+			    [Transaction Count]
+			)
+		formatString: 0.0
+		displayFolder: 01 Base
+		lineageTag: 59b602ee-e4b5-48db-bae9-2085b60d2e70
+
+		changedProperty = Name
+
+		changedProperty = FormatString
+
+		changedProperty = DisplayFolder
+
+		changedProperty = IsHidden
+
+	measure 'Revenue Period Change Amount' =
+			
+			[Revenue - Selected Period]
+			    - [Revenue - Previous Period]
+		formatString: \$#,0.0;(\$#,0.0);\$#,0.0
+		displayFolder: 02 Period\Revenue
+		lineageTag: 6d566cb7-1e82-4469-8460-dc5f8535e96b
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	measure 'Revenue - Comparison Window Trend' =
+			
+			VAR ReportDate =
+			    [Selected Report Date]
+			
+			VAR NumberOfDays =
+			    [Selected Period Days]
+			
+			VAR ComparisonStartDate =
+			    IF (
+			        NumberOfDays = 1,
+			        ReportDate - 7,
+			        ReportDate - ( NumberOfDays * 2 ) + 1
+			    )
+			
+			VAR AxisDate =
+			    MAX ( dim_date[calendar_date] )
+			
+			RETURN
+			    IF (
+			        AxisDate >= ComparisonStartDate
+			            && AxisDate <= ReportDate,
+			        [Total Revenue]
+			    )
+		displayFolder: 02 Period\Revenue
+		lineageTag: 1b942204-1255-473d-804e-4445b777d267
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Average Daily Revenue by Weekday - Current' =
+			
+			VAR ReportDate =
+			    [Selected Report Date]
+			
+			VAR NumberOfDays =
+			    [Selected Period Days]
+			
+			VAR PeriodStart =
+			    ReportDate - NumberOfDays + 1
+			
+			VAR AxisWeekdays =
+			    VALUES ( dim_date[day_of_week_number] )
+			
+			VAR PeriodDates =
+			    CALCULATETABLE (
+			        VALUES ( dim_date[calendar_date] ),
+			        REMOVEFILTERS ( dim_date ),
+			        DATESBETWEEN (
+			            dim_date[calendar_date],
+			            PeriodStart,
+			            ReportDate
+			        ),
+			        TREATAS (
+			            AxisWeekdays,
+			            dim_date[day_of_week_number]
+			        )
+			    )
+			
+			RETURN
+			    AVERAGEX (
+			        PeriodDates,
+			        CALCULATE ( [Total Revenue] )
+			    )
+		displayFolder: 02 Period\Revenue
+		lineageTag: 2cbc6554-8684-418a-8a84-9b0a9e8944c0
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Average Daily Revenue by Weekday - Previous' =
+			
+			VAR ReportDate =
+			    [Selected Report Date]
+			
+			VAR NumberOfDays =
+			    [Selected Period Days]
+			
+			VAR PreviousPeriodEnd =
+			    IF (
+			        NumberOfDays = 1,
+			        ReportDate - 7,
+			        ReportDate - NumberOfDays
+			    )
+			
+			VAR PreviousPeriodStart =
+			    PreviousPeriodEnd - NumberOfDays + 1
+			
+			VAR AxisWeekdays =
+			    VALUES ( dim_date[day_of_week_number] )
+			
+			VAR PeriodDates =
+			    CALCULATETABLE (
+			        VALUES ( dim_date[calendar_date] ),
+			        REMOVEFILTERS ( dim_date ),
+			        DATESBETWEEN (
+			            dim_date[calendar_date],
+			            PreviousPeriodStart,
+			            PreviousPeriodEnd
+			        ),
+			        TREATAS (
+			            AxisWeekdays,
+			            dim_date[day_of_week_number]
+			        )
+			    )
+			
+			RETURN
+			    AVERAGEX (
+			        PeriodDates,
+			        CALCULATE ( [Total Revenue] )
+			    )
+		displayFolder: 02 Period\Revenue
+		lineageTag: 89b1f4b6-318d-4ae5-9aaa-f824be101876
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Inventory Cost Value' =
+			
+			SUM(fact_inventory_position[inventory_cost_value])
+		formatString: \$#,0.0;(\$#,0.0);\$#,0.0
+		displayFolder: 03 Inventory
+		lineageTag: f5b7cd5c-31c5-4190-8651-8cb85d6e62af
+
+		changedProperty = Name
+
+		changedProperty = FormatString
+
+		changedProperty = DisplayFolder
+
+		changedProperty = IsHidden
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	measure 'Potential Overstock Flag' =
+			
+			VAR Stock =
+			    [Current Stock On Hand]
+			
+			VAR RecentUnits =
+			    [Recent 30-Day Units]
+			
+			VAR SupplyDays =
+			    [Days of Supply]
+			
+			RETURN
+			    IF (
+			        NOT ISBLANK ( Stock )
+			            && Stock > 0
+			            && (
+			                RecentUnits = 0
+			                    || SupplyDays >= 60
+			            ),
+			        1,
+			        0
+			    )
+		formatString: 0
+		displayFolder: 03 Inventory
+		lineageTag: 1a705bb2-a46d-4f50-8c79-4da31d8c25a9
+
+	measure 'Potential Overstock Position Count' =
+			
+			VAR StoreProductPositions =
+			    CROSSJOIN (
+			        VALUES ( dim_store[store_id] ),
+			        VALUES ( dim_product[product_id] )
+			    )
+			RETURN
+			    SUMX (
+			        StoreProductPositions,
+			        CALCULATE ( [Potential Overstock Flag] )
+			    )
+		formatString: 0
+		displayFolder: 03 Inventory
+		lineageTag: 69d37002-ea87-4de4-a8ae-1940268e8dbf
+
+	measure 'Inventory Retail Value' =
+			
+			SUM(fact_inventory_position[inventory_retail_value])
+		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+		displayFolder: 03 Inventory
+		lineageTag: 51312867-ccf4-44ae-9534-d42b66a71aab
+
+		changedProperty = Name
+
+		changedProperty = FormatString
+
+		changedProperty = DisplayFolder
+
+		changedProperty = IsHidden
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	measure 'Revenue - Selected Store Trend' =
+			
+			IF (
+			    HASONEVALUE ( dim_store[store_id] ),
+			    [Revenue - 12 Week Trend],
+			    BLANK ()
+			)
+		formatString: \$#,0.0;(\$#,0.0);\$#,0.0
+		displayFolder: 02 Period\Revenue
+		lineageTag: 2985bad1-6106-4fca-95b7-5b6b6449f928
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	measure 'Selected Store Trend Title' =
+			
+			VAR StoreName =
+			    SELECTEDVALUE ( dim_store[store_name] )
+			RETURN
+			    IF (
+			        NOT ISBLANK ( StoreName ),
+			        StoreName & " — 12-Week Revenue Trend",
+			        "Selected Store Revenue Trend"
+			    )
+		displayFolder: 05 Display Text
+		lineageTag: 0b7d3aad-ad26-4b55-8295-216dd0219a8e
+
+	measure 'Selected Weekday Trend Title' =
+			
+			VAR SelectedWeekday =
+			    SELECTEDVALUE ( dim_date[day_name] )
+			RETURN
+			    IF (
+			        NOT ISBLANK ( SelectedWeekday ),
+			        SelectedWeekday & " Revenue Trend",
+			        "Selected Weekday Revenue Trend"
+			    )
+		displayFolder: 05 Display Text
+		lineageTag: 55329ce1-7f1a-40e2-986f-aa5fe4176a35
+
+	measure 'Store Trend Message' =
+			
+			IF (
+			    HASONEVALUE ( dim_store[store_id] ),
+			    BLANK (),
+			    "Select a store to view its revenue trend"
+			)
+		displayFolder: 04 Attension
+		lineageTag: 2e9c9286-cb5b-45ca-8f0f-b5e3c5abf68d
+
+	column _Placeholder
+		formatString: 0
+		lineageTag: 3cc3468c-4c7d-4370-b5fa-5d64353d9dfc
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [_Placeholder]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition _Measures = calculated
+		mode: import
+		source =
+				
+				DATATABLE (
+				    "_Placeholder", INTEGER,
+				    {
+				        { 1 }
+				    }
+				)
+
+	annotation PBI_Id = b79fe595b1af41dab11cf36c0e52fd0c
+

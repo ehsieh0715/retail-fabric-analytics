@@ -1,0 +1,25 @@
+relationship 28116d72-8526-3996-86a1-fa224a425443
+	fromColumn: fact_sales.date_key
+	toColumn: dim_date.date_key
+
+relationship d8fa3935-f71c-0799-b4bd-1d4c5a155ade
+	fromColumn: fact_sales.product_id
+	toColumn: dim_product.product_id
+
+relationship 8fb67834-0465-a9fa-615b-446d2a4faab3
+	fromColumn: fact_sales.store_id
+	toColumn: dim_store.store_id
+
+relationship 51037857-b9d3-1340-84fc-000e7a2690ac
+	fromColumn: fact_inventory_position.product_id
+	toColumn: dim_product.product_id
+
+relationship 45990abc-25a5-8932-8eda-90ebffa89315
+	fromColumn: fact_inventory_position.store_id
+	toColumn: dim_store.store_id
+
+relationship e739e0b1-8cda-4748-95c3-f476303ea6c6
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'Report Date'.'Report Date'
+	toColumn: LocalDateTable_8db5c522-ca9e-44c3-bead-bac51316c6b9.Date
+

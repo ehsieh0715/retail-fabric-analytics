@@ -1,0 +1,372 @@
+{
+    "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.12.0/schema.json",
+    "name": "15ff5a4bb29f08c91fbb",
+    "position": {
+        "x": 962.7350427350428,
+        "y": 351.45299145299145,
+        "z": 1000,
+        "height": 344.61538461538464,
+        "width": 925.8119658119658,
+        "tabOrder": 1000
+    },
+    "visual": {
+        "visualType": "tableEx",
+        "query": {
+            "queryState": {
+                "Values": {
+                    "projections": [
+                        {
+                            "field": {
+                                "Column": {
+                                    "Expression": {
+                                        "SourceRef": {
+                                            "Entity": "dim_store"
+                                        }
+                                    },
+                                    "Property": "store_name"
+                                }
+                            },
+                            "queryRef": "dim_store.store_name",
+                            "nativeQueryRef": "Store",
+                            "displayName": "Store"
+                        },
+                        {
+                            "field": {
+                                "Column": {
+                                    "Expression": {
+                                        "SourceRef": {
+                                            "Entity": "dim_product"
+                                        }
+                                    },
+                                    "Property": "product_name"
+                                }
+                            },
+                            "queryRef": "dim_product.product_name",
+                            "nativeQueryRef": "Product",
+                            "displayName": "Product"
+                        },
+                        {
+                            "field": {
+                                "Measure": {
+                                    "Expression": {
+                                        "SourceRef": {
+                                            "Entity": "_Measures"
+                                        }
+                                    },
+                                    "Property": "Current Stock On Hand"
+                                }
+                            },
+                            "queryRef": "_Measures.Current Stock On Hand",
+                            "nativeQueryRef": "Stock",
+                            "displayName": "Stock"
+                        },
+                        {
+                            "field": {
+                                "Measure": {
+                                    "Expression": {
+                                        "SourceRef": {
+                                            "Entity": "_Measures"
+                                        }
+                                    },
+                                    "Property": "Recent 30-Day Units"
+                                }
+                            },
+                            "queryRef": "_Measures.Recent 30-Day Units",
+                            "nativeQueryRef": "Recent 30D Units",
+                            "displayName": "Recent 30D Units"
+                        },
+                        {
+                            "field": {
+                                "Measure": {
+                                    "Expression": {
+                                        "SourceRef": {
+                                            "Entity": "_Measures"
+                                        }
+                                    },
+                                    "Property": "Days of Supply"
+                                }
+                            },
+                            "queryRef": "_Measures.Days of Supply",
+                            "nativeQueryRef": "Days of Supply"
+                        },
+                        {
+                            "field": {
+                                "Measure": {
+                                    "Expression": {
+                                        "SourceRef": {
+                                            "Entity": "_Measures"
+                                        }
+                                    },
+                                    "Property": "Inventory Cost Value"
+                                }
+                            },
+                            "queryRef": "_Measures.Inventory Cost Value",
+                            "nativeQueryRef": "Cost Value",
+                            "displayName": "Cost Value"
+                        }
+                    ]
+                }
+            },
+            "sortDefinition": {
+                "sort": [
+                    {
+                        "field": {
+                            "Measure": {
+                                "Expression": {
+                                    "SourceRef": {
+                                        "Entity": "_Measures"
+                                    }
+                                },
+                                "Property": "Inventory Cost Value"
+                            }
+                        },
+                        "direction": "Descending"
+                    }
+                ]
+            }
+        },
+        "objects": {
+            "values": [
+                {
+                    "properties": {
+                        "fontSize": {
+                            "expr": {
+                                "Literal": {
+                                    "Value": "13D"
+                                }
+                            }
+                        }
+                    }
+                }
+            ],
+            "columnHeaders": [
+                {
+                    "properties": {
+                        "fontSize": {
+                            "expr": {
+                                "Literal": {
+                                    "Value": "13D"
+                                }
+                            }
+                        },
+                        "columnAdjustment": {
+                            "expr": {
+                                "Literal": {
+                                    "Value": "'growToFit'"
+                                }
+                            }
+                        },
+                        "defaultColumnWidth": {
+                            "expr": {
+                                "Literal": {
+                                    "Value": "90D"
+                                }
+                            }
+                        }
+                    }
+                }
+            ],
+            "total": [
+                {
+                    "properties": {
+                        "totals": {
+                            "expr": {
+                                "Literal": {
+                                    "Value": "false"
+                                }
+                            }
+                        }
+                    }
+                }
+            ]
+        },
+        "visualContainerObjects": {
+            "title": [
+                {
+                    "properties": {
+                        "text": {
+                            "expr": {
+                                "Literal": {
+                                    "Value": "'Potential Overstock Positions'"
+                                }
+                            }
+                        },
+                        "fontSize": {
+                            "expr": {
+                                "Literal": {
+                                    "Value": "18D"
+                                }
+                            }
+                        }
+                    }
+                }
+            ],
+            "subTitle": [
+                {
+                    "properties": {
+                        "show": {
+                            "expr": {
+                                "Literal": {
+                                    "Value": "true"
+                                }
+                            }
+                        },
+                        "text": {
+                            "expr": {
+                                "Literal": {
+                                    "Value": "'No recent demand or more than 60 days of supply'"
+                                }
+                            }
+                        }
+                    }
+                }
+            ]
+        },
+        "drillFilterOtherVisuals": true
+    },
+    "filterConfig": {
+        "filters": [
+            {
+                "name": "35a7ad6dcccaa1dafd9f",
+                "ordinal": 0,
+                "field": {
+                    "Column": {
+                        "Expression": {
+                            "SourceRef": {
+                                "Entity": "dim_product"
+                            }
+                        },
+                        "Property": "product_name"
+                    }
+                },
+                "type": "Categorical"
+            },
+            {
+                "name": "dfc218ec0312c737a104",
+                "ordinal": 1,
+                "field": {
+                    "Column": {
+                        "Expression": {
+                            "SourceRef": {
+                                "Entity": "dim_store"
+                            }
+                        },
+                        "Property": "store_name"
+                    }
+                },
+                "type": "Categorical"
+            },
+            {
+                "name": "01095591425c2f0240a2",
+                "ordinal": 2,
+                "field": {
+                    "Measure": {
+                        "Expression": {
+                            "SourceRef": {
+                                "Entity": "_Measures"
+                            }
+                        },
+                        "Property": "Current Stock On Hand"
+                    }
+                },
+                "type": "Advanced"
+            },
+            {
+                "name": "beb21140c987ed891694",
+                "ordinal": 3,
+                "field": {
+                    "Measure": {
+                        "Expression": {
+                            "SourceRef": {
+                                "Entity": "_Measures"
+                            }
+                        },
+                        "Property": "Recent 30-Day Units"
+                    }
+                },
+                "type": "Advanced"
+            },
+            {
+                "name": "25a096025d17a863eb76",
+                "ordinal": 4,
+                "field": {
+                    "Measure": {
+                        "Expression": {
+                            "SourceRef": {
+                                "Entity": "_Measures"
+                            }
+                        },
+                        "Property": "Days of Supply"
+                    }
+                },
+                "type": "Advanced"
+            },
+            {
+                "name": "2fa4cdcea5f2e0874a70",
+                "ordinal": 5,
+                "field": {
+                    "Measure": {
+                        "Expression": {
+                            "SourceRef": {
+                                "Entity": "_Measures"
+                            }
+                        },
+                        "Property": "Inventory Cost Value"
+                    }
+                },
+                "type": "Advanced"
+            },
+            {
+                "name": "7db488af6572a6e50bd1",
+                "ordinal": 6,
+                "field": {
+                    "Measure": {
+                        "Expression": {
+                            "SourceRef": {
+                                "Entity": "_Measures"
+                            }
+                        },
+                        "Property": "Potential Overstock Flag"
+                    }
+                },
+                "type": "Advanced",
+                "filter": {
+                    "Version": 2,
+                    "From": [
+                        {
+                            "Name": "_",
+                            "Entity": "_Measures",
+                            "Type": 0
+                        }
+                    ],
+                    "Where": [
+                        {
+                            "Condition": {
+                                "Comparison": {
+                                    "ComparisonKind": 0,
+                                    "Left": {
+                                        "Measure": {
+                                            "Expression": {
+                                                "SourceRef": {
+                                                    "Source": "_"
+                                                }
+                                            },
+                                            "Property": "Potential Overstock Flag"
+                                        }
+                                    },
+                                    "Right": {
+                                        "Literal": {
+                                            "Value": "1L"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    ]
+                },
+                "howCreated": "User"
+            }
+        ],
+        "filterSortOrder": "Custom"
+    }
+}

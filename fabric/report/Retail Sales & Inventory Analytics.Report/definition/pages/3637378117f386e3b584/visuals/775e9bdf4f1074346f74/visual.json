@@ -1,0 +1,108 @@
+{
+    "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.12.0/schema.json",
+    "name": "775e9bdf4f1074346f74",
+    "position": {
+        "x": 32.06680584551148,
+        "y": 351.3987473903967,
+        "z": 11000,
+        "height": 343.3820459290188,
+        "width": 459.62421711899793,
+        "tabOrder": 11000
+    },
+    "visual": {
+        "visualType": "clusteredColumnChart",
+        "query": {
+            "queryState": {
+                "Category": {
+                    "projections": [
+                        {
+                            "field": {
+                                "Column": {
+                                    "Expression": {
+                                        "SourceRef": {
+                                            "Entity": "dim_date"
+                                        }
+                                    },
+                                    "Property": "day_name"
+                                }
+                            },
+                            "queryRef": "dim_date.day_name",
+                            "nativeQueryRef": "day_name",
+                            "active": true
+                        }
+                    ]
+                },
+                "Y": {
+                    "projections": [
+                        {
+                            "field": {
+                                "Measure": {
+                                    "Expression": {
+                                        "SourceRef": {
+                                            "Entity": "_Measures"
+                                        }
+                                    },
+                                    "Property": "Average Daily Revenue by Weekday - Current"
+                                }
+                            },
+                            "queryRef": "_Measures.Average Daily Revenue by Weekday - Current",
+                            "nativeQueryRef": "Current Period",
+                            "displayName": "Current Period"
+                        },
+                        {
+                            "field": {
+                                "Measure": {
+                                    "Expression": {
+                                        "SourceRef": {
+                                            "Entity": "_Measures"
+                                        }
+                                    },
+                                    "Property": "Average Daily Revenue by Weekday - Previous"
+                                }
+                            },
+                            "queryRef": "_Measures.Average Daily Revenue by Weekday - Previous",
+                            "nativeQueryRef": "Previous Period",
+                            "displayName": "Previous Period"
+                        }
+                    ]
+                }
+            }
+        },
+        "visualContainerObjects": {
+            "title": [
+                {
+                    "properties": {
+                        "text": {
+                            "expr": {
+                                "Literal": {
+                                    "Value": "'Average Revenue by Weekday'"
+                                }
+                            }
+                        },
+                        "fontSize": {
+                            "expr": {
+                                "Literal": {
+                                    "Value": "18D"
+                                }
+                            }
+                        }
+                    }
+                }
+            ],
+            "subTitle": [
+                {
+                    "properties": {
+                        "text": {
+                            "expr": {
+                                "Literal": {
+                                    "Value": "'Current versus previous period'"
+                                }
+                            }
+                        }
+                    }
+                }
+            ]
+        },
+        "drillFilterOtherVisuals": true
+    }
+}

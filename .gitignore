@@ -16,3 +16,6 @@ data/raw/
 
 # Environment variables
 .env
+
+# Rendered Fabric deployment definitions
+.deployment/

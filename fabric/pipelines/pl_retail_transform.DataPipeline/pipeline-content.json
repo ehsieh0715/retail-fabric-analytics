@@ -1,0 +1,45 @@
+{
+    "properties": {
+        "activities": [
+            {
+                "name": "nb_bronze_to_silver",
+                "type": "TridentNotebook",
+                "dependsOn": [],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "typeProperties": {
+                    "notebookId": "__BRONZE_TO_SILVER_NOTEBOOK_ID__",
+                    "workspaceId": "__TARGET_WORKSPACE_ID__"
+                }
+            },
+            {
+                "name": "nb_silver_to_gold",
+                "type": "TridentNotebook",
+                "dependsOn": [
+                    {
+                        "activity": "nb_bronze_to_silver",
+                        "dependencyConditions": [
+                            "Succeeded"
+                        ]
+                    }
+                ],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "typeProperties": {
+                    "notebookId": "__SILVER_TO_GOLD_NOTEBOOK_ID__",
+                    "workspaceId": "__TARGET_WORKSPACE_ID__"
+                }
+            }
+        ]
+    }
+}
