@@ -88,6 +88,5 @@ table fact_inventory_position
 		mode: directLake
 		source
 			entityName: fact_inventory_position
-			schemaName: dbo
 			expressionSource: 'DirectLake - lh_retail_analytics'
 

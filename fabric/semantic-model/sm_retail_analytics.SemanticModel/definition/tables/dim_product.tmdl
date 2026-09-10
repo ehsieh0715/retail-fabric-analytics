@@ -102,6 +102,5 @@ table dim_product
 		mode: directLake
 		source
 			entityName: dim_product
-			schemaName: dbo
 			expressionSource: 'DirectLake - lh_retail_analytics'
 

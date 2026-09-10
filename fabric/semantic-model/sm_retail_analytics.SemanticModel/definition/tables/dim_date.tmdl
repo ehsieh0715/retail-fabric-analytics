@@ -166,6 +166,5 @@ table dim_date
 		mode: directLake
 		source
 			entityName: dim_date
-			schemaName: dbo
 			expressionSource: 'DirectLake - lh_retail_analytics'
 

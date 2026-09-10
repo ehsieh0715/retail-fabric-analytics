@@ -67,6 +67,5 @@ table dim_store
 		mode: directLake
 		source
 			entityName: dim_store
-			schemaName: dbo
 			expressionSource: 'DirectLake - lh_retail_analytics'
 

@@ -146,6 +146,5 @@ table fact_sales
 		mode: directLake
 		source
 			entityName: fact_sales
-			schemaName: dbo
 			expressionSource: 'DirectLake - lh_retail_analytics'
 
